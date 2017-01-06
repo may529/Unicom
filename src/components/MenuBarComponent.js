@@ -85,81 +85,16 @@ class MenuBarComponent extends React.Component {
     //     });
     //   }
     // });
-    let menus = {};
-    if (SS.get(Config.roleType) == 'edu') { //教委管理员的菜单
-      menus = {
-        'lst': [
-          {'urlName': '报表查询', 'icon': '&#xe602;', 'id': 1, 'url': '/report-query'},
-          {
-            'urlName': '数据统计', 'icon': '&#xe620;', 'id': 2, 'url': '',
-            'children': [{'urlName': '可视化数据', 'icon': '', 'id': 2.1, 'url': '/visualization'}, {
-              'urlName': '数据导出',
-              'icon': '',
-              'id': 2.2,
-              'url': '/output'
-            }]
-          },
-          {'urlName': '模板管理', 'icon': '&#xe614;', 'id': 3, 'url': '/template'},
-          {'urlName': '任务管理', 'icon': '&#xe616;', 'id': 4, 'url': '/task'},
-          {
-            'urlName': '学校管理', 'icon': '&#xe612;', 'id': 5,
-            'children': [{'urlName': '学校维护', 'icon': '', 'id': 5.1, 'url': '/school'},
-              {'urlName': '学校管理员管理', 'icon': '', 'id': 5.2, 'url': '/school-user'}], 'url': ''
-          },
-          {'urlName': '用户管理', 'icon': '&#xe601;', 'id': 6, 'url': '/users'},
-          {'urlName': '角色管理', 'icon': '&#xe66f;', 'id': 7, 'url': '/role'},
-          {
-            'urlName': '系统管理', 'icon': '&#xe613;', 'id': 8,
-            'children': [{'urlName': '操作日志', 'icon': '', 'id': 8.1, 'url': '/log'},
-              {'urlName': '上传设置', 'icon': '', 'id': 8.2, 'url': '/upload-setting'}], 'url': ''
-          }
-        ],
-        'status': 0
-      };
-    } else {//学校管理员菜单
-      menus = {
-        'lst': [{
-          'urlName': '数据填报',
-          'icon': '&#xe620;',
-          'id': 1,
-          'url': '/data-reporting',
-          'children': [{'urlName': '待处理', 'icon': '', 'id': 1.1, 'url': '/data-report'}, {
-            'urlName': '已处理',
-            'icon': '',
-            'id': 1.2,
-            'url': '/data-reported'
-          }]
-        },
-          {
-            'urlName': '报表审核',
-            'icon': '&#xe603;',
-            'id': 2,
-            'url': '/reporting-audit',
-            'children': [{'urlName': '待处理', 'icon': '', 'id': 2.1, 'url': '/audit-report'}, {
-              'urlName': '已处理',
-              'icon': '',
-              'id': 2.2,
-              'url': '/audit-reported'
-            }]
-          },
-          {'urlName': '报表查询', 'icon': '&#xe602', 'id': 3, 'url': '/report-query'},
-          {
-            'urlName': '用户管理',
-            'icon': '&#xe601;',
-            'id': 4,
-            'children': [{'urlName': '学校用户维护', 'icon': '', 'id': 4.1, 'url': '/user-maintain'}, {
-              'urlName': '报表用户分配',
-              'icon': '',
-              'id': 4.2,
-              'url': '/user-distribution'
-            }],
-            'url': '/user-msg'
-          }
-        ],
-        'status': 0
-      };
-    }
-
+    let menus = {
+      'lst': [
+        {'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist'},
+        {'urlName': '特殊产品', 'icon': '&#xe614;', 'id': 3, 'url': '/template'},
+        {'urlName': '靓号管理', 'icon': '&#xe616;', 'id': 4, 'url': '/task'},
+        {'urlName': '用户管理', 'icon': '&#xe601;', 'id': 6, 'url': '/users'},
+        {'urlName': '角色管理', 'icon': '&#xe66f;', 'id': 7, 'url': '/role'},
+      ],
+      'status': 0
+    };
     menus.lst.unshift({'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/'});
     this.setState({
       menu: this.sortMenu(menus.lst)

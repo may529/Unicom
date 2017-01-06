@@ -21,24 +21,11 @@ class InputUploadComponent extends React.Component {
     }
   }
   componentWillMount(){
-    request({
-      type: 'get',
-      url: Config.host+Config.qiniuToken,
-      data: {
-        // suffix:''
-      },
-      success: (data)=> {
-        let layout =[];
-        layout.push(this.props.item.uploadLayout);
-        this.setState({
-          qiniuInfo:{
-            token:data.token,
-            key:''
-          },
-          layout:layout,
-          type:this.props.item.uploadType
-        });
-      }
+    let layout =[];
+    layout.push(this.props.item.uploadLayout);
+    this.setState({
+      layout:layout,
+      type:this.props.item.uploadType
     });
   }
   handleSelect(value,option){

@@ -8,7 +8,7 @@ class WelcomeComponent extends React.Component {
   render() {
     return (
       <div className="welcome-component center">
-        <span className="welcome-msg">欢迎使用苑东生物制药学习测评管理系统</span>
+        <span className="welcome-msg">欢迎使用联通网上支持平台管理系统</span>
       </div>
     );
   }
