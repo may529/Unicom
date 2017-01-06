@@ -42,7 +42,7 @@ class ProductlistComponent extends React.Component {
       {
         dataIndex: 'name',
         title: '产品名称',
-        width: '20%',
+        width: '15%',
         dataType: 'text',
         showable: true,
         editable: true, //是否可以编辑
