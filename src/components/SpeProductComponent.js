@@ -62,22 +62,29 @@ class SpeProductComponent extends React.Component {
         showable: false,
         editable: true,
         chlidOptionsType:['channel','productId'],
-        chlidOptions: [{
-          value: '1',
-          label: 'Uber',
-          children: [{
-            value: '11',
-            label: 'Hangzhou',
-
-          }],
-        }, {
-          value: '2',
-          label: '滴滴',
-          children: [{
-            value: '21',
-            label: 'Nanjing',
-          }],
-        }],
+        dataWarp:(data)=>{
+          let list = data.result.list || [];
+          let didi = [];
+          let uber = []
+          list.forEach((item)=>{
+            if(item.channel == 'didi'){
+              didi.push(item);
+            }else if(item.channel == 'uber'){
+              uber.push(item);
+            }
+          });
+          data.result.list = [{
+            value: 'uber',
+            label: 'Uber',
+            children: uber,
+          }, {
+            value: 'didi',
+            label: '滴滴',
+            children: didi,
+          }];
+          return data;
+        },
+        chlidOptions: Config.host+'/api/admin/products/search',
       },
       {
         dataIndex: 'desc',
