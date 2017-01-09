@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert} from 'antd';
+import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert } from 'antd';
 import CommCrudtable from './ui/CommCrudtableComponent';
 import Config from 'config';
 import request from '../Request';
@@ -9,14 +9,14 @@ import request from '../Request';
 require('styles//Productlist.less');
 
 class ProductlistComponent extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
 
     }
     this.getOperaUrl = this.getOperaUrl.bind(this);
   }
-  getColums(){
+  getColums() {
     return [
       {
         dataIndex: 'id',
@@ -29,6 +29,11 @@ class ProductlistComponent extends React.Component {
         dataIndex: 'pics',
         title: '图片轮播',
         dataType: 'inputUpload',
+        dataIndexAlia: 'picsName',
+        uploadLayout: 'inline',
+        showUploadListType: true,
+        multiple: true,
+        uploadType: 'image',
         showable: false,
         editable: true,
       },
@@ -36,8 +41,20 @@ class ProductlistComponent extends React.Component {
         dataIndex: 'icon',
         title: '图标',
         dataType: 'inputUpload',
+        dataIndexAlia: 'iconName',
+        uploadLayout: 'inline',
+        showUploadListType: true,
+        multiple: false,
+        uploadType: 'image',
         showable: true,
         editable: true,
+        render(text,reocrd){
+          return(
+            <Col style={{width:50}}>
+              <img src={text == null ? df_logo : text+'?imageView2/1/w/50/h/50'} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
+            </Col>
+          );
+        }
       },
       {
         dataIndex: 'name',
@@ -68,11 +85,11 @@ class ProductlistComponent extends React.Component {
           emptyMsg: '请输入产品价格',
           errorMsg: '请按价格格式填写'
         }
-      },{
+      }, {
         dataIndex: 'category.id',
         title: '产品分类',
         showable: false,
-      },{
+      }, {
         dataIndex: 'category.name',
         title: '产品分类',
         dataType: 'select',
@@ -83,20 +100,20 @@ class ProductlistComponent extends React.Component {
           isDispaly: true,
           name: 'category.name' //查询的字段名称
         },
-        chlidOptions: [ {
-          value:0,
+        chlidOptions: [{
+          value: 0,
           text: '靓号'
         }, {
-          value:1,
+          value: 1,
           text: '套餐'
         }],
-      },{
+      }, {
         dataIndex: 'desc',
         title: '摘要',
         dataType: 'textarea',
         showable: false,
         editable: true,
-      },{
+      }, {
         dataIndex: 'channel',
         title: '渠道来源',
         dataType: 'select',
@@ -115,19 +132,19 @@ class ProductlistComponent extends React.Component {
           value: '2',
           text: '嘀嘀'
         }],
-      },{
+      }, {
         dataIndex: 'homeTop',
         title: '首页置顶权重',
         dataType: 'number',
         showable: true,
         editable: true,
-      },{
+      }, {
         dataIndex: 'content',
         title: '详情',
         dataType: 'richtext',
         showable: false,
         editable: true,
-      },{
+      }, {
         dataIndex: 'spec',
         title: '规格',
         dataType: 'richtext',
@@ -138,7 +155,7 @@ class ProductlistComponent extends React.Component {
   }
   getOperaUrl() {
     return {
-      loadDataUrl: (params,onLoadData)=>{
+      loadDataUrl: (params, onLoadData) => {
         onLoadData({
           "code": 0,
           "message": "测试内容tgr4",
@@ -154,14 +171,15 @@ class ProductlistComponent extends React.Component {
                 "desc": "测试内容5n6q",
                 "homeTop": 1,
                 "id": 1221,
-                "icon": "测试内容n52e",
+                "icon": "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
                 "name": "测试内容5efb",
                 "pics": [
-                  "string1",
-                  "string2",
-                  "string3",
-                  "string4",
-                  "string5"
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
+                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg"
                 ],
                 "price": "测试内容1p55",
                 "spec": "测试内容8v82"
@@ -182,13 +200,14 @@ class ProductlistComponent extends React.Component {
         <CommCrudtable
           columns={this.getColums()}
           operaUrl={this.getOperaUrl()}
+          searchType='open'
           pagination={true}
           showDefaultBtn={{
             showAddBtn: true,
             showEditBtn: true,
             showDeleteBtn: true
           }}
-        />
+          />
       </div>
     );
   }

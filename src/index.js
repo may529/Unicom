@@ -14,6 +14,7 @@ import Main from './components/Main';
 import Login from './components/LoginComponent';
 import Welcome from './components/WelcomeComponent';
 import Productlist from './components/ProductlistComponent';
+import SpeProduct from './components/SpeProductComponent';
 
 class App extends React.Component{
   constructor(props) {
@@ -34,7 +35,8 @@ class App extends React.Component{
         <Route path='/login' component={Login}/>
         <Route path='/' onEnter={this.handleAuth} component={Main} breadcrumbName='首页'>
           <IndexRoute component={Welcome}/>
-          <Router path='/productlist' breadcrumbName='产品列表' component={Productlist}/>
+          <Router path='/productlist' breadcrumbName='产品管理' component={Productlist}/>
+          <Router path='/speproduct' breadcrumbName='特殊产品管理' component={SpeProduct}/>
         </Route>
       </Router>
     );

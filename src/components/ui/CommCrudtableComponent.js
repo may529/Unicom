@@ -2,12 +2,13 @@
 require('styles/ui/CommCrudtable.less');
 
 import React from 'react';
-import {Table, Button, Modal, message, Row, Col, Tooltip, Menu} from 'antd';
-import {Form} from 'antd';
+import { Table, Button, Modal, message, Row, Col, Tooltip, Menu } from 'antd';
+import { Form } from 'antd';
 import Icon from './IconComponent';
 import Request from '../../Request';
 import ModifyForm from './ModifyFormComponent';
 import Search from './SearchComponent';
+import SearchOpen from './SearchOpenComponent'
 
 class CommCrudtableComponent extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class CommCrudtableComponent extends React.Component {
       filterData: [],
       filterKey: '',//用于本地筛选数据的key
       filterValue: null,
-      pagination: {current: 1, total: 10, pageSize: 10}, //初始化分页
+      pagination: { current: 1, total: 10, pageSize: 10 }, //初始化分页
       sorter: {},
       searcher: {},
       loading: false, //是否加载状态
@@ -68,7 +69,7 @@ class CommCrudtableComponent extends React.Component {
   reLoad() {
     this.setState({
       filterValue: '',
-      pagination: {current: 1, total: 10, pageSize: 10}
+      pagination: { current: 1, total: 10, pageSize: 10 }
     }, () => {
       this.loadData();
     });
@@ -112,7 +113,7 @@ class CommCrudtableComponent extends React.Component {
 
       let pagination = this.state.pagination;
       pagination.total = (result.total || data.count || data.total || result.total || result.totalPages * pagination.pageSize);
-      let lst = ( result.list || result.lst || result.array);
+      let lst = (result.list || result.lst || result.array);
       lst.forEach((item) => {
         item.key = item.id;
       });
@@ -130,9 +131,9 @@ class CommCrudtableComponent extends React.Component {
         // console.log(this.state.filterValue);
         if (!!this.props.filter.key) {
           if (this.state.filterValue) {
-            this.handleFilter({key: this.state.filterValue});
+            this.handleFilter({ key: this.state.filterValue });
           } else {
-            this.handleFilter({key: (this.state.filterData[0] || {}).id});
+            this.handleFilter({ key: (this.state.filterData[0] || {}).id });
           }
         }
       });
@@ -177,7 +178,7 @@ class CommCrudtableComponent extends React.Component {
       obj = this.props.dataFormat(obj);
     }
     let that = this;
-    this.setState({modifyIsLoading: true});
+    this.setState({ modifyIsLoading: true });
     Request({
       type: 'post',
       url: this.props.operaUrl.saveOrUpdateUrl,
@@ -308,8 +309,8 @@ class CommCrudtableComponent extends React.Component {
             return (
               <Tooltip key={opera.title} placement='bottom' title={title} onClick={() => {
                 opera.call(record, this)
-              }}>
-                <Icon type={opera.icon} style={style}/>
+              } }>
+                <Icon type={opera.icon} style={style} />
               </Tooltip>
             );
           });
@@ -350,8 +351,8 @@ class CommCrudtableComponent extends React.Component {
             return;
           }
           record = (instance.state.filterData || []).filter((item) => {
-              return instance.state.filterValue == item.id;
-            })[0] || {};
+            return instance.state.filterValue == item.id;
+          })[0] || {};
           record = JSON.parse(JSON.stringify(record));
           //把子数据数组变成id字符串
           record[instance.props.filter.field] = record[instance.props.filter.field].map((child) => {
@@ -413,7 +414,12 @@ class CommCrudtableComponent extends React.Component {
     });
 
     this.initOptinData();
-    this.loadData();
+    //开放式的搜索，要等搜索按钮加载完再加载第一次数据
+    if (this.props.searchType === 'open') {
+
+    } else {
+      this.loadData();
+    }
   }
 
   //初始化下拉框字段的选项
@@ -481,12 +487,12 @@ class CommCrudtableComponent extends React.Component {
   handleFilter(event) {
     let key = parseInt(event.key);
     let data = (this.state.filterData || []).filter((item) => {
-        return key == item.id;
-      })[0] || {};
+      return key == item.id;
+    })[0] || {};
     this.setState({
       data: data[this.props.filter.field] || [],
       filterValue: key,
-      selectedRows: !key ? [] : [{id: key}]
+      selectedRows: !key ? [] : [{ id: key }]
     });
     //console.log(key);
   }
@@ -528,6 +534,50 @@ class CommCrudtableComponent extends React.Component {
     return true;
   }
 
+  getHead() {
+    let actions = this.state.actionItem.map((action, index) => {
+      let selected = this.state.selectedRows.length;
+      let disabled = true;
+      if (selected >= (action.when || 0)) {
+        disabled = false;
+      }
+      if (selected > 1 && !action.multiple) {
+        disabled = true;
+      }
+      return (
+        <Button type={action.type} key={index} disabled={disabled} onClick={() => {
+          action.call(this.state.selectedRows, this);
+        } }>{action.title}</Button>
+      );
+    });
+
+
+    if (this.state.searchColumns.length <= 0) {
+      return undefined;
+    }
+    if (this.props.searchType === 'open') {
+      return (
+        <Row className='commcrudtable-head'>
+          <SearchOpen searchColumns={this.state.searchColumns} onSearch={this.handleSearch.bind(this)}
+            instance={this} />
+          <Col className='commcrudtable-opera'>
+            {actions}
+          </Col>
+        </Row>
+      )
+    } else {
+      return (
+        <Row className='commcrudtable-head'>
+          <Col className='commcrudtable-opera'>
+            {actions}
+          </Col>
+          <Search searchColumns={this.state.searchColumns} onSearch={this.handleSearch.bind(this)} instance={this} />
+          <Col style={{ clear: 'both' }}></Col>
+        </Row>
+      )
+    }
+  }
+
   render() {
     let actions = this.state.actionItem.map((action) => {
       let selected = this.state.selectedRows.length;
@@ -541,7 +591,7 @@ class CommCrudtableComponent extends React.Component {
       return (
         <Button key={action.title} icon={action.icon} type={action.type} disabled={disabled} onClick={() => {
           action.call(this.state.selectedRows, this);
-        }}>{action.title}</Button>
+        } }>{action.title}</Button>
       );
     });
 
@@ -555,51 +605,43 @@ class CommCrudtableComponent extends React.Component {
     }
     return (
       <Row className='commcrudtable-component'>
-        <Row className='commcrudtable-head'>
-          <Col className='commcrudtable-opera'>
-            {actions}
-          </Col>
-          { this.state.searchColumns.length > 0 &&
-          <Search searchColumns={this.state.searchColumns} onSearch={this.handleSearch.bind(this)} instance={this}/>}
-          <Col style={{clear: 'both'}}></Col>
-        </Row>
-
+        {this.getHead()}
         <Row className='commcrudtable-body'>
           {filterPanel}
           <Col span={filterPanel ? 18 : 24}>
             <Table columns={this.state.showColumns}
-                   expandedRowRender={this.props.expandedRowRender}
-                   dataSource={this.state.data}
-                   pagination={pagination}
-                   loading={this.state.loading}
-                   rowKey={x => x.id}
-                   onChange={this.handleTableChange.bind(this)}
-                   rowSelection={!this.isShowSelection() ? null : {
-                       type: !!this.props.multiple ? 'checkbox' : 'radio',
-                       onChange: this.onSelectChange.bind(this),
-                       selectedRowKeys: this.state.selectedRowKeys
-                     }}/>
+              expandedRowRender={this.props.expandedRowRender}
+              dataSource={this.state.data}
+              pagination={pagination}
+              loading={this.state.loading}
+              rowKey={x => x.id}
+              onChange={this.handleTableChange.bind(this)}
+              rowSelection={!this.isShowSelection() ? null : {
+                type: !!this.props.multiple ? 'checkbox' : 'radio',
+                onChange: this.onSelectChange.bind(this),
+                selectedRowKeys: this.state.selectedRowKeys
+              }} />
           </Col>
         </Row>
         {(this.state.modifyShowType != 'hide') &&
-        <Modal title='新增/编辑'
-               id='modifyShow'
-               width={600}
-               zIndex={99}
-               visible={this.state.modifyShowType != 'hide'}
-               onCancel={() => {
-                 this.setState({modifyShowType: 'hide', modifyRow: {}});
-               }}
-               onOk={this.handleSubmit.bind(this)}
-               confirmLoading={this.state.modifyIsLoading}>
-          <ModifyForm
-            tips={this.props.tips}
-            data={this.state.modifyRow}
-            columns={this.state.editColumns}
-            extColumns={this.state.extColumns}
-            form={this.props.form}
-            instance={this}/>
-        </Modal>
+          <Modal title='新增/编辑'
+            id='modifyShow'
+            width={600}
+            zIndex={99}
+            visible={this.state.modifyShowType != 'hide'}
+            onCancel={() => {
+              this.setState({ modifyShowType: 'hide', modifyRow: {} });
+            } }
+            onOk={this.handleSubmit.bind(this)}
+            confirmLoading={this.state.modifyIsLoading}>
+            <ModifyForm
+              tips={this.props.tips}
+              data={this.state.modifyRow}
+              columns={this.state.editColumns}
+              extColumns={this.state.extColumns}
+              form={this.props.form}
+              instance={this} />
+          </Modal>
         }
       </Row>
     );

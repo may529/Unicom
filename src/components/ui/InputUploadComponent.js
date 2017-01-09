@@ -2,65 +2,89 @@
 require('styles/ui/InputUpload.less');
 
 import React from 'react';
-import { Modal,Upload,message,Col,Row,Button,Icon,Input } from 'antd';
+import { Modal, Upload, message, Col, Row, Button, Icon, Input } from 'antd';
 import request from '../../Request';
 import Config from 'config';
 
 
 class InputUploadComponent extends React.Component {
-  constructor( props ){
+  constructor(props) {
     super(props);
-    this.state={
-      priviewVisible:false,
-      priviewImage:'',
-      addLoding:false,
-      qiniuInfo:{},
-      layout:[],
-      fileList:null,
-      type:'text'
+    this.state = {
+      priviewVisible: false,
+      priviewImage: '',
+      addLoding: false,
+      layout: [],
+      fileList: null,
+      type: 'text'
     }
   }
-  componentWillMount(){
-    let layout =[];
+  componentWillMount() {
+    let layout = [];
     layout.push(this.props.item.uploadLayout);
+
     this.setState({
-      layout:layout,
-      type:this.props.item.uploadType
+      layout: layout,
+      type: this.props.item.uploadType,
     });
   }
-  handleSelect(value,option){
+  handleSelect(value, option) {
     //console.log('InputUploadComponent-handleSelect',value,option);
     //return false;
   }
-  handlebeforeUploade( file ){
-    let qiniuInfo = this.state.qiniuInfo;
-    let key = parseInt(Date.now() +''+ (Math.floor(Math.random()*100000000000000000%100000000)));
-    let suffix = file.name.match(/\.[^\.]+$/);
-    qiniuInfo.key = key+suffix;
-    this.setState({qiniuInfo:qiniuInfo});
+  handlebeforeUploade(file) {
+    // let key = parseInt(Date.now() + '' + (Math.floor(Math.random() * 100000000000000000 % 100000000)));
+    // let suffix = file.name.match(/\.[^\.]+$/);
+    // qiniuInfo.key = key + suffix;
   }
-  handleChange( info ){
-    //限制上传列表
+  handleChange(info) {
+    console.log(info.file.status);
+    //去掉后缀名的文件名
+    info.file.originName = info.file.name.replace(/\.[^\.]+$/, '');
+    const {item, form} = this.props;
+
+
+    let values = form.getFieldsValue();
     let fileList = info.fileList;
-    fileList = fileList.slice(-1);
+    if (!item.multiple) {
+      //限制上传列表
+      fileList = fileList.slice(-1);
+    } else {
+
+      // fileList.fileList.forEacrh((item) => {
+      //   if (item.status == 'uploading') {
+      //     item.uploadDate = Date.now();
+      //   }
+      //   if (item.uploadDate == undefined) {
+      //     item.uploadDate = 0;
+      //   }
+      // }).sort((a, b) => {
+      //   return a.uploadDate - b.uploadDate;
+      // });
+    }
     this.setState({ fileList });
 
-    //去掉后缀名的文件名
-    info.file.originName = info.file.name.replace(/\.[^\.]+$/,'');
-    const {item,form} = this.props;
     //let qiniuInfo = this.state.qiniuInfo;
-    switch( info.file.status ){
+    switch (info.file.status) {
       case 'uploading':
         // info.file.name = qiniuInfo.key+suffix;
         break;
       case 'done':
-        let values = form.getFieldsValue();
-        //debugger;
-        values[item.dataIndex] = Config.qiniudUrl+info.file.response.key;
-        values[item.dataIndexAlia] = info.file.originName;
+        info.file.url = info.file.response.result.url;
+        if (!item.multiple) {
+          values[item.dataIndex] = info.file.url;
+          values[item.dataIndexAlia] = info.file.originName;
+        } else {
+          values[item.dataIndex] = values[item.dataIndex] ? values[item.dataIndex] : [];
+          values[item.dataIndex].push(info.file.url);
+          values[item.dataIndexAlia] = values[item.dataIndexAlia] ? values[item.dataIndexAlia] : [];
+          values[item.dataIndexAlia].push(info.file.originName);
+        }
         // console.log(values);
+        this.setState({ fileList });
+        console.log(fileList);
         form.setFieldsValue(values);
-        if( typeof this.props.onChangeFile == 'function' ){
+        if (typeof this.props.onChangeFile == 'function') {
           this.props.onChangeFile(values);
         }
         break;
@@ -75,52 +99,80 @@ class InputUploadComponent extends React.Component {
     });
   }
   render() {
-    const qiniuInfo = this.state.qiniuInfo ;
     const item = this.props.item;
     let imgUrl = this.props.form.getFieldValue(item.dataIndex);
     let fileList = this.state.fileList;
 
-    if(!Config.validateRules.isNull(imgUrl)){
-      fileList = fileList || [{
-          uid: -1,
-          name: '',
-          status: 'done',
-          url: imgUrl ,
-          thumbUrl: imgUrl
-        }];
+    //
+    if (fileList === null) {
+      if (!item.multiple) {
+        if (!Config.validateRules.isNull(imgUrl)) {
+          fileList = [{
+            uid: -1,
+            name: '',
+            status: 'done',
+            url: imgUrl,
+            thumbUrl: imgUrl
+          }];
+        }
+      }
+      else {
+        fileList = (imgUrl || []).map((url, index) => {
+          return {
+            uid: -index,
+            name: '',
+            status: 'done',
+            url: url,
+            thumbUrl: url
+          }
+        });
+      }
     }
 
+
     const props = {
-      action: Config.qiniuUpload,
-      // headers:qiniuInfo,
-      data:qiniuInfo,
+      action: 'https://amalthea-dev.leanapp.cn/admin/1/upload',
       beforeUpload: this.handlebeforeUploade.bind(this),
       onChange: this.handleChange.bind(this),
       multiple: false,//支持多选
-      accept:item.uploadAccept,
+      accept: item.uploadAccept,
+      headers: {
+        'Amalthea-Token': 'fpx5vi3r0lswr3gqzu2ooel99'
+      },
       //showUploadList:true,
-      showUploadList:item.showUploadListType == true ? true : false,
-      listType: this.state.type == 'image' ?'picture-card' :'text',
+      showUploadList: item.showUploadListType == true ? true : false,
+      listType: this.state.type == 'image' ? 'picture-card' : 'text',
       //defaultFileList: Config.validateRules.isNull(imgUrl) ? [] : defaultFileList,
       onPreview: (file) => {
         this.setState({
           priviewImage: file.url,
           priviewVisible: true
         });
+      },
+      onRemove: (file) => {
+        const {item, form} = this.props;
+        let values = form.getFieldsValue();
+        if (!item.multiple) {
+          values[item.dataIndex] = null;
+        } else {
+          let index = values[item.dataIndex].findIndex(x => x === file.url);
+          values[item.dataIndex].splice(index, 1);
+        }
+        form.setFieldsValue(values);
       }
     };
     let { getFieldProps } = this.props.form;
     // debugger;
-    let formItem = (this.state.layout || []).map((_item)=>{
-      let input ='';
+    let formItem = (this.state.layout || []).map((_item) => {
+      let input = '';
       //console.log(_item);
-      switch (_item){
+      switch (_item) {
         case 'inline':
           input = (<Row>
             {this.state.type == 'image' ?
               <Row>
                 <Col span={24}>
-                  <Input type='hidden' {...this.props}/>
+                  <Input type='hidden' {...this.props} />
                   <Upload {...props} fileList={fileList}>
                     <Icon type="plus" />
                     <div className="ant-upload-text">{item.uploadBtnText}</div>
@@ -130,8 +182,8 @@ class InputUploadComponent extends React.Component {
               :
               <Row>
                 <Col span={18}>
-                  <Input type={item.showAlia == false ? 'hidden' : 'text'} {...getFieldProps(item.dataIndexAlia)}  disabled={item.disabled} autoComplete='off' placeholder={item.title}/>
-                  <Input type='hidden' {...this.props}/>
+                  <Input type={item.showAlia == false ? 'hidden' : 'text'} {...getFieldProps(item.dataIndexAlia) } disabled={item.disabled} autoComplete='off' placeholder={item.title} />
+                  <Input type='hidden' {...this.props} />
                 </Col>
                 <Col span={6} className='upload-btn'>
                   <Upload {...props} fileList={fileList}>
@@ -150,23 +202,20 @@ class InputUploadComponent extends React.Component {
               this.state.type == 'image' ?
                 <Row >
                   <Col span={24}>
-                    <Input type='hidden' {...this.props}/>
+                    <Input type='hidden' {...this.props} />
                     <div className="clearfix">
                       <Upload {...props} fileList={fileList}>
                         <Icon type="plus" />
                         <div className="ant-upload-text">上传照片</div>
                       </Upload>
-                      <Modal visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel.bind(this)}>
-                        <img alt="example" src={this.state.priviewImage} />
-                      </Modal>
                     </div>
                   </Col>
                 </Row>
                 :
                 <Row>
                   <Col span={24}>
-                    <Input type={item.showAlia == false ? 'hidden' : 'text'} {...getFieldProps(item.dataIndexAlia)}  disabled={item.disabled} autoComplete='off' placeholder={item.title}/>
-                    <Input type='hidden' {...this.props}/>
+                    <Input type={item.showAlia == false ? 'hidden' : 'text'} {...getFieldProps(item.dataIndexAlia) } disabled={item.disabled} autoComplete='off' placeholder={item.title} />
+                    <Input type='hidden' {...this.props} />
                     <Upload {...props} fileList={fileList}>
                       <Button type='ghost'>
                         <Icon type='upload' />
@@ -191,6 +240,13 @@ class InputUploadComponent extends React.Component {
     return (
       <Row className='inputupload-component'>
         {formItem}
+
+        <Modal visible={this.state.priviewVisible} footer={null} onCancel={() => {
+          this.setState({ priviewVisible: false });
+        } }>
+          <img alt="example" style={{ width: '100%' }} src={this.state.priviewImage} />
+        </Modal>
+
       </Row>
     );
   }

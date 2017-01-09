@@ -88,10 +88,7 @@ class MenuBarComponent extends React.Component {
     let menus = {
       'lst': [
         {'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist'},
-        {'urlName': '特殊产品', 'icon': '&#xe614;', 'id': 3, 'url': '/template'},
-        {'urlName': '靓号管理', 'icon': '&#xe616;', 'id': 4, 'url': '/task'},
-        {'urlName': '用户管理', 'icon': '&#xe601;', 'id': 6, 'url': '/users'},
-        {'urlName': '角色管理', 'icon': '&#xe66f;', 'id': 7, 'url': '/role'},
+        {'urlName': '特殊产品管理', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct'},
       ],
       'status': 0
     };
