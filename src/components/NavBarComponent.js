@@ -85,18 +85,18 @@ class NavBarComponent extends React.Component {
   }
 
   loadData() {
-    requset({
-      type: 'get',
-      url: Config.host + '/custom/user',
-      data: {},
-      success: (data)=> {
-        this.setState({
-          data: data.result
-        }, ()=> {
-          this.props.form.setFieldsValue(data.result);
-        });
-      }
-    });
+    // requset({
+    //   type: 'get',
+    //   url: Config.host + '/custom/user',
+    //   data: {},
+    //   success: (data)=> {
+    //     this.setState({
+    //       data: data.result
+    //     }, ()=> {
+    //       this.props.form.setFieldsValue(data.result);
+    //     });
+    //   }
+    // });
   }
 
   loginOut() {

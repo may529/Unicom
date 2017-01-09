@@ -219,7 +219,7 @@ class CommCrudtableComponent extends React.Component {
 
         Request({
           type: 'delete',
-          url: this.props.operaUrl.delUrl + keys,
+          url: this.props.operaUrl.delUrl + keys[0],
           success: (data) => {
             if (data.code != 0) {
               message.error(data.message);
@@ -438,6 +438,7 @@ class CommCrudtableComponent extends React.Component {
               message.error(data.message);
               return;
             }
+
             data = data.result;
             if (typeof item.dataWarp === 'function') {
               data = item.dataWarp(data);

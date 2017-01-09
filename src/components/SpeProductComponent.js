@@ -14,7 +14,7 @@ class SpeProductComponent extends React.Component {
     this.state={
 
     }
-    this.getOperaUrl = this.getOperaUrl.bind(this);
+
   }
   getColums(){
     return [
@@ -26,18 +26,19 @@ class SpeProductComponent extends React.Component {
         showable: false,
       },
       {
-        dataIndex: 'product.icon',
+        dataIndex: 'icon',
         title: '图标',
         render(text,reocrd){
+          text = reocrd['Product'].icon;
           return(
             <Col style={{width:50}}>
-              <img src={text == null ? df_logo : text+'?imageView2/1/w/50/h/50'} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
+              <img src={Config.host+(text == null ? df_logo : text+'?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
             </Col>
           );
         }
       },
       {
-        dataIndex: 'product.channel',
+        dataIndex: 'channel',
         title: '渠道来源',
         dataType: 'select',
         editable: false, //是否可以编辑
@@ -47,13 +48,21 @@ class SpeProductComponent extends React.Component {
         },
         chlidOptions: [{
           key: '1',
-          value: '1',
+          value: 'uber',
           text: 'uber'
         }, {
           key: '2',
-          value: '2',
+          value: 'didi',
           text: '嘀嘀'
         }],
+        render(text,reocrd){
+          text = reocrd['Product'].channel;
+          return(
+            <Col style={{width:50}}>
+              {text}
+            </Col>
+          );
+        }
       },
       {
         dataIndex: 'productId',
@@ -63,17 +72,18 @@ class SpeProductComponent extends React.Component {
         editable: true,
         chlidOptionsType:['channel','productId'],
         dataWarp:(data)=>{
-          let list = data.result.list || [];
+          let list = data.list || [];
           let didi = [];
           let uber = []
           list.forEach((item)=>{
+            item.label = item.name;
             if(item.channel == 'didi'){
               didi.push(item);
             }else if(item.channel == 'uber'){
               uber.push(item);
             }
           });
-          data.result.list = [{
+          data.list = [{
             value: 'uber',
             label: 'Uber',
             children: uber,
@@ -84,7 +94,7 @@ class SpeProductComponent extends React.Component {
           }];
           return data;
         },
-        chlidOptions: Config.host+'/api/admin/products/search',
+        chlidOptionsUrl: Config.host+'/api/admin/products/search',
       },
       {
         dataIndex: 'desc',
@@ -95,53 +105,18 @@ class SpeProductComponent extends React.Component {
       },
     ]
   }
-  getOperaUrl() {
-    return {
-      loadDataUrl: (params,onLoadData)=>{
-        onLoadData({
-          "code": 0,
-          "message": "测试内容tgr4",
-          "result": {
-            "list": [
-              {"id":'001',"desc":"特殊描述特殊描述特殊描述","product":{
-                "category": {
-                  "id": 66731,
-                  "name": "靓号"
-                },
-                "channel": "uber",
-                "content": "测试内容40v6",
-                "desc": "测试内容5n6q",
-                "homeTop": 1,
-                "id": 1221,
-                "icon": "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                "name": "测试内容5efb",
-                "pics": [
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg"
-                ],
-                "price": "测试内容1p55",
-                "spec": "测试内容8v82"
-              },"productId":1221}
-            ],
-            "pageNum": 35416,
-            "pageSize": 64602,
-            "total": 30117
-          }
-        })
-      }
-    }
-  }
+
 
   render() {
     return (
       <div className="speproduct-component">
         <CommCrudtable
           columns={this.getColums()}
-          operaUrl={this.getOperaUrl()}
+          operaUrl={{
+            loadDataUrl:Config.host+'/api/admin/special-products/search',
+            saveOrUpdateUrl:Config.host+'/api/admin/products/save',
+            delUrl:Config.host+'/api/admin/products/',
+          }}
           searchType='open'
           pagination={true}
           showDefaultBtn={{

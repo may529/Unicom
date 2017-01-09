@@ -14,7 +14,6 @@ class ProductlistComponent extends React.Component {
     this.state = {
 
     }
-    this.getOperaUrl = this.getOperaUrl.bind(this);
   }
   getColums() {
     return [
@@ -51,7 +50,7 @@ class ProductlistComponent extends React.Component {
         render(text,reocrd){
           return(
             <Col style={{width:50}}>
-              <img src={text == null ? df_logo : text+'?imageView2/1/w/50/h/50'} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
+              <img src={Config.host+(text == null ? df_logo : text+'?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
             </Col>
           );
         }
@@ -86,27 +85,32 @@ class ProductlistComponent extends React.Component {
           errorMsg: '请按价格格式填写'
         }
       }, {
-        dataIndex: 'category.id',
-        title: '产品分类',
-        showable: false,
-      }, {
-        dataIndex: 'category.name',
+        dataIndex: 'categoryId',
         title: '产品分类',
         dataType: 'select',
-        sorter: true,
         showable: true,
         editable: true,
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true,
-          name: 'category.name' //查询的字段名称
+          name: 'categoryId' //查询的字段名称
         },
-        chlidOptions: [{
-          value: 0,
-          text: '靓号'
-        }, {
-          value: 1,
-          text: '套餐'
-        }],
+        dataWarp:(data)=>{
+          console.log(data);
+          data.list.forEach((item)=>{
+            item.label = item.name;
+            item.value = item.id;
+            item.text = item.name;
+          });
+          window.CATEGORY = data.list;
+          return data;
+        },
+        chlidOptionsUrl: Config.host+'/api/admin/categories',
+        chlidOptions:[],
+        render(text,record){
+          console.log(text,window.CATEGORY);
+          console.log(((window.CATEGORY||[]).find(x=>x.id === text) ||{}).name || "");
+          return ((window.CATEGORY||[]).find(x=>x.id === text) ||{}).name || "";
+        }
       }, {
         dataIndex: 'desc',
         title: '摘要',
@@ -125,11 +129,11 @@ class ProductlistComponent extends React.Component {
         },
         chlidOptions: [{
           key: '1',
-          value: '1',
+          value: 'uber',
           text: 'uber'
         }, {
           key: '2',
-          value: '2',
+          value: 'didi',
           text: '嘀嘀'
         }],
       }, {
@@ -153,53 +157,17 @@ class ProductlistComponent extends React.Component {
       }
     ]
   }
-  getOperaUrl() {
-    return {
-      loadDataUrl: (params, onLoadData) => {
-        onLoadData({
-          "code": 0,
-          "message": "测试内容tgr4",
-          "result": {
-            "list": [
-              {
-                "category": {
-                  "id": 66731,
-                  "name": "靓号"
-                },
-                "channel": "uber",
-                "content": "测试内容40v6",
-                "desc": "测试内容5n6q",
-                "homeTop": 1,
-                "id": 1221,
-                "icon": "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                "name": "测试内容5efb",
-                "pics": [
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg",
-                  "http://ac-8rlqt41A.clouddn.com/c1325caf3627429dfed0.jpg"
-                ],
-                "price": "测试内容1p55",
-                "spec": "测试内容8v82"
-              }
-            ],
-            "pageNum": 35416,
-            "pageSize": 64602,
-            "total": 30117
-          }
-        })
-      }
-    }
-  }
 
   render() {
     return (
       <div className="productlist-component">
         <CommCrudtable
           columns={this.getColums()}
-          operaUrl={this.getOperaUrl()}
+          operaUrl={{
+            loadDataUrl:Config.host+'/api/admin/products/search',
+            saveOrUpdateUrl:Config.host+'/api/admin/products/save',
+            delUrl:Config.host+'/api/admin/products/',
+          }}
           searchType='open'
           pagination={true}
           showDefaultBtn={{

@@ -82,7 +82,7 @@ class LoginComponent extends React.Component {
 
     request({
       type: 'post',
-      url: Config.host + '/login',
+      url: Config.host + '/api/login',
       data: {
         username: params.username,
         password: params.password,

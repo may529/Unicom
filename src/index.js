@@ -15,6 +15,7 @@ import Login from './components/LoginComponent';
 import Welcome from './components/WelcomeComponent';
 import Productlist from './components/ProductlistComponent';
 import SpeProduct from './components/SpeProductComponent';
+import SS from 'parsec-ss';
 
 class App extends React.Component{
   constructor(props) {
@@ -23,9 +24,10 @@ class App extends React.Component{
 
   //权限验证(是否登录)
   handleAuth(nextState, replace) {
-    // if (SS.get(Config.token) == null) {
-    //   window.location.href = '#/login';
-    // }
+    // console.log(SS.get(Config.token));
+    if (SS.get(Config.token) == null) {
+      window.location.href = '#/login';
+    }
     return true;
   }
 

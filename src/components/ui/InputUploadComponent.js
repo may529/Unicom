@@ -5,6 +5,7 @@ import React from 'react';
 import { Modal, Upload, message, Col, Row, Button, Icon, Input } from 'antd';
 import request from '../../Request';
 import Config from 'config';
+import SS from 'parsec-ss';
 
 
 class InputUploadComponent extends React.Component {
@@ -131,13 +132,13 @@ class InputUploadComponent extends React.Component {
 
 
     const props = {
-      action: 'https://amalthea-dev.leanapp.cn/admin/1/upload',
+      action: Config.host+'/api/admin/common/upload',
       beforeUpload: this.handlebeforeUploade.bind(this),
       onChange: this.handleChange.bind(this),
       multiple: false,//支持多选
       accept: item.uploadAccept,
       headers: {
-        'Amalthea-Token': 'fpx5vi3r0lswr3gqzu2ooel99'
+        [Config.token]: SS.get(Config.token)
       },
       //showUploadList:true,
       showUploadList: item.showUploadListType == true ? true : false,

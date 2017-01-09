@@ -52,17 +52,15 @@ export default (option) => {
   Object.assign(option, {
     cache: false,
     beforeSend: function (xhr) {
-      xhr.setRequestHeader("pageUri", window.location.hash.substr(1, window.location.hash.indexOf("?") - 1));
-      xhr.setRequestHeader(Config.token, SS.get(Config.token) == null ? '' : SS.get(Config.token));
-      // xhr.setRequestHeader("Content-Type","application/json");
-      xhr.setRequestHeader(Config.userId, SS.get(Config.userId) == null ? '' : SS.get(Config.userId));
+      xhr.setRequestHeader(Config.token, SS.get(Config.token));
+
     },
     dataType: 'json',
-    //contentType: "application/json"
+    contentType: "application/json"
   });
 
   if (!!option.type && option.type != "get") {
-    //option.data = JSON.stringify(option.data);
+    option.data = JSON.stringify(option.data);
   }
 
   return $.ajax(option);

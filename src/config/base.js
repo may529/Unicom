@@ -94,7 +94,7 @@ let validateRegExp = {
 };
 
 export default {
-  token:'token',
+  token:'Authorization',
   user:'user',
   userId:'userId',
   roleType:'roleType',
