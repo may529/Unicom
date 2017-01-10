@@ -39,7 +39,7 @@ class InputUploadComponent extends React.Component {
     // qiniuInfo.key = key + suffix;
   }
   handleChange(info) {
-    console.log(info.file.status);
+    // console.log(info.file.status);
     //去掉后缀名的文件名
     info.file.originName = info.file.name.replace(/\.[^\.]+$/, '');
     const {item, form} = this.props;
@@ -71,7 +71,7 @@ class InputUploadComponent extends React.Component {
         // info.file.name = qiniuInfo.key+suffix;
         break;
       case 'done':
-        info.file.url = info.file.response.result.url;
+        info.file.url = Config.host+info.file.response.result;
         if (!item.multiple) {
           values[item.dataIndex] = info.file.url;
           values[item.dataIndexAlia] = info.file.originName;
@@ -83,7 +83,7 @@ class InputUploadComponent extends React.Component {
         }
         // console.log(values);
         this.setState({ fileList });
-        console.log(fileList);
+        // console.log(fileList);
         form.setFieldsValue(values);
         if (typeof this.props.onChangeFile == 'function') {
           this.props.onChangeFile(values);
@@ -138,7 +138,7 @@ class InputUploadComponent extends React.Component {
       multiple: false,//支持多选
       accept: item.uploadAccept,
       headers: {
-        [Config.token]: SS.get(Config.token)
+        [Config.token]: 'Bearer '+SS.get(Config.token)
       },
       //showUploadList:true,
       showUploadList: item.showUploadListType == true ? true : false,

@@ -8,16 +8,17 @@ require('babel-polyfill');
 import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import Config from 'config';
 import Main from './components/Main';
 import Login from './components/LoginComponent';
 import Welcome from './components/WelcomeComponent';
 import Productlist from './components/ProductlistComponent';
 import SpeProduct from './components/SpeProductComponent';
+import AdManger from './components/AdMangerComponent';
 import SS from 'parsec-ss';
 
-class App extends React.Component{
+class App extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -31,14 +32,15 @@ class App extends React.Component{
     return true;
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Router history={hashHistory}>
-        <Route path='/login' component={Login}/>
+        <Route path='/login' component={Login} />
         <Route path='/' onEnter={this.handleAuth} component={Main} breadcrumbName='首页'>
-          <IndexRoute component={Welcome}/>
-          <Router path='/productlist' breadcrumbName='产品管理' component={Productlist}/>
-          <Router path='/speproduct' breadcrumbName='特殊产品管理' component={SpeProduct}/>
+          <IndexRoute component={Welcome} />
+          <Router path='/productlist' breadcrumbName='产品管理' component={Productlist} />
+          <Router path='/speproduct' breadcrumbName='特殊产品管理' component={SpeProduct} />
+          <Router path='/ad' breadcrumbName='广告管理' component={AdManger} />
         </Route>
       </Router>
     );

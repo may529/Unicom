@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import {Row, Col} from 'antd';
-import {Form, Input, InputNumber, DatePicker, Checkbox, Select, Radio} from 'antd';
+import { Row, Col } from 'antd';
+import { Form, Input, InputNumber, DatePicker, Checkbox, Select, Radio } from 'antd';
 import InputSelect from './InputSelectComponent';
 import InputUpload from './InputUploadComponent';
 import InputTransfer from './InputTransferComponent';
@@ -114,8 +114,8 @@ class ModifyFormComponent extends React.Component {
 
     //表单项统一样式
     const formItemLayout = {
-      labelCol: {span: 4},
-      wrapperCol: {span: 18}
+      labelCol: { span: 4 },
+      wrapperCol: { span: 18 }
     };
 
     //过滤可编辑项并按类型创建输入框
@@ -151,69 +151,84 @@ class ModifyFormComponent extends React.Component {
       switch (item.dataType) {
         case 'hidden':
           return (
-            <Input type='hidden' disabled={disabled} autoComplete='off' key={item.dataIndex} placeholder={item.title}/>);
+            getFieldDecorator(item.dataIndex, {
+              rules: [
+                // { required: true },
+                {
+                  validator: (rule, value, callback, source, options) => {
+                    this.handleValidata = this.handleValidata.bind(this);
+                    this.handleValidata(rule, value, callback, source, options, item);
+                  }
+                }
+              ],
+              onChange: () => {
+                this.setState({ refresh: true });
+              },
+              initialValue: item.defaultValue
+            })(<Input type='hidden' disabled={disabled} autoComplete='off' key={item.dataIndex} placeholder={item.title} />)
+          );
           break;
         case 'text':
           input = (
-            <Input type='text' disabled={disabled} autoComplete='off' placeholder={item.title}/>);
+            <Input type='text' disabled={disabled} autoComplete='off' placeholder={item.title} />);
           break;
         case 'password':
           input = (
-            <Input type='password' disabled={disabled} autoComplete='off' placeholder={item.title}/>);
+            <Input type='password' disabled={disabled} autoComplete='off' placeholder={item.title} />);
           break;
         case 'number':
-          input = (<InputNumber disabled={disabled} autoComplete='off' placeholder={item.title}/>);
+          input = (<InputNumber disabled={disabled} autoComplete='off' placeholder={item.title} />);
           break;
         case 'email':
           input = (
             <Input type='email' disabled={disabled} autoComplete='off'
-                   placeholder={item.title}/>);
+              placeholder={item.title} />);
           break;
         case 'date':
-          input = (<DatePicker disabled={disabled} format={item.format}/>);
+          input = (<DatePicker disabled={disabled} format={item.format} />);
           break;
         case 'checkbox':
           input = ((item.chlidOptions || []).map((option) => {
-            return (<label className='ant-checkbox-inline' key={option.value}><Checkbox disabled={disabled} value={option.value}/>{option.text}
+            return (<label className='ant-checkbox-inline' key={option.value}><Checkbox disabled={disabled} value={option.value} />{option.text}
             </label>)
           }));
           break;
         case 'radio':
           let radio = ((item.chlidOptions || []).map((option) => {
-            return ( <Radio key={option.value} value={option.value}>{option.text}</Radio>)
+            return (<Radio key={option.value} value={option.value}>{option.text}</Radio>)
           }));
           input = (<Radio.Group disabled={disabled}>{radio}</Radio.Group>);
           break;
         case 'select':
           let option = ((item.chlidOptions || []).map((option) => {
-            return ( <Select.Option key={option.value} value={option.value}>{option.text}</Select.Option>)
+            return (<Select.Option key={option.value} value={option.value}>{option.text}</Select.Option>)
           }));
           input = (<Select disabled={disabled}>{option}</Select>);
           break;
         case 'inputSelect':
-          input = (<InputSelect item={item} disabled={disabled}/>);
+          input = (<InputSelect item={item} disabled={disabled} />);
           break;
         case 'inputUpload':
-          input = (<InputUpload item={item} form={this.props.form} disabled={disabled}/>);
+          input = (<InputUpload item={item} form={this.props.form} disabled={disabled} />);
           break;
         case 'transfer':
-          input = (<InputTransfer item={item} form={this.props.form} disabled={disabled}/>);
+          input = (<InputTransfer item={item} form={this.props.form} disabled={disabled} />);
           break;
         case 'textarea':
           input = (
-            <Input type='textarea' autoComplete='off' disabled={disabled} autosize={{minRows: 6}} placeholder={item.title}/>);
+            <Input type='textarea' autoComplete='off' disabled={disabled} autosize={{ minRows: 6 }} placeholder={item.title} />);
           break;
         case 'richtext':
-          input = (<RichTextEditor item={item} height='200' form={this.props.form} disabled={disabled}/>);
+          input = (<RichTextEditor item={item} height='200' form={this.props.form} disabled={disabled} />);
           break;
         case 'tags':
-          input = (<Tags item={item} height='200' form={this.props.form} disabled={disabled}/>);
+          input = (<Tags item={item} height='200' form={this.props.form} disabled={disabled} />);
           break;
         case 'cascader':
           item.chlidOptionsType.forEach((type) => {
             this.props.form.getFieldProps(type);
           });
-          input = (<Cascader item={item} form={this.props.form} disabled={disabled}/>);
+          input = (<Cascader item={item} form={this.props.form} disabled={disabled} />);
           break;
         default:
       }
@@ -235,7 +250,7 @@ class ModifyFormComponent extends React.Component {
                 }
               ],
               onChange: () => {
-                this.setState({refresh: true});
+                this.setState({ refresh: true });
               },
               initialValue: item.defaultValue
             })(input)
@@ -246,7 +261,7 @@ class ModifyFormComponent extends React.Component {
     });
     let formItemExt = (this.props.extColumns || []).map((item) => {
       return (
-        <item.component form={this.props.form} item={item} key={item.key}/>
+        <item.component form={this.props.form} item={item} key={item.key} />
       )
     });
 
@@ -259,12 +274,12 @@ class ModifyFormComponent extends React.Component {
     return (
       <Row>
         {showable &&
-        <Row>
-          <Col span={24} style={{
-            textAlign: 'center',
-            marginBottom: '10px'
-          }}>{this.props.tips.text}</Col>
-        </Row>}
+          <Row>
+            <Col span={24} style={{
+              textAlign: 'center',
+              marginBottom: '10px'
+            }}>{this.props.tips.text}</Col>
+          </Row>}
         <Row>
           <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
             {formItem}

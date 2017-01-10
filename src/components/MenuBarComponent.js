@@ -2,10 +2,10 @@
 require('styles//MenuBar.less');
 
 import React from 'react';
-import SS  from 'parsec-ss';
+import SS from 'parsec-ss';
 import Config from 'config';
-import {Menu, Icon, Row, Spin, Button} from 'antd';
-import {Link} from 'react-router';
+import { Menu, Icon, Row, Spin, Button } from 'antd';
+import { Link } from 'react-router';
 //import request from '../Request';
 
 let menu_key = SS.get('menu_key') == null ? '0' : SS.get('menu_key');
@@ -36,7 +36,7 @@ class MenuBarComponent extends React.Component {
   matchPath(path, prefix, parent) {
     parent.map((item) => {
       if (item.url == path) {
-        this.setState({current: '' + item.id});
+        this.setState({ current: '' + item.id });
         return;
       }
       if (item.children) {
@@ -87,12 +87,13 @@ class MenuBarComponent extends React.Component {
     // });
     let menus = {
       'lst': [
-        {'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist'},
-        {'urlName': '特殊产品管理', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct'},
+        { 'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist' },
+        { 'urlName': '特殊产品管理', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct' },
+        { 'urlName': '广告管理', 'icon': '&#xe614;', 'id': 4, 'url': '/ad' },
       ],
       'status': 0
     };
-    menus.lst.unshift({'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/'});
+    menus.lst.unshift({ 'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/' });
     this.setState({
       menu: this.sortMenu(menus.lst)
     }, () => {
@@ -117,7 +118,7 @@ class MenuBarComponent extends React.Component {
 
   handleToogle() {
     this.props.onToggle(!this.state.isOpen);
-    this.setState({isOpen: !this.state.isOpen});
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   render() {
@@ -131,15 +132,15 @@ class MenuBarComponent extends React.Component {
         var chiildren = item.children.map(function (child, childIndex) {
           return (
             <Menu.Item key={'' + child.id}><Link to={child.url}><i className="iconfont"
-                                                                   dangerouslySetInnerHTML={{__html: child.icon}}></i><span >{child.urlName}</span></Link></Menu.Item>
+              dangerouslySetInnerHTML={{ __html: child.icon }}></i><span >{child.urlName}</span></Link></Menu.Item>
           );
         });
         return (
           <Menu.SubMenu key={'' + item.id} title={
             <span onClick={() => {
-//              console.log(item);
-              this.setState({current: '' + item.id});
-            }}><i className="iconfont" dangerouslySetInnerHTML={{__html: item.icon}}></i><span
+              //              console.log(item);
+              this.setState({ current: '' + item.id });
+            } }><i className="iconfont" dangerouslySetInnerHTML={{ __html: item.icon }}></i><span
               style={linkStyle}>{item.urlName}</span></span>}>
             {chiildren}
           </Menu.SubMenu>
@@ -147,8 +148,8 @@ class MenuBarComponent extends React.Component {
       } else {
         return (
           <Menu.Item key={'' + item.id}><Link to={item.url}><i className="iconfont"
-                                                               dangerouslySetInnerHTML={{__html: item.icon}}></i><span
-            style={linkStyle}>{item.urlName}</span></Link></Menu.Item>
+            dangerouslySetInnerHTML={{ __html: item.icon }}></i><span
+              style={linkStyle}>{item.urlName}</span></Link></Menu.Item>
         );
       }
     });
@@ -156,13 +157,13 @@ class MenuBarComponent extends React.Component {
       <Spin spinning={menuItem.length == 0}>
         <Row className='menubar-component'>
           <Row className='controller'>
-            <Button onClick={this.handleToogle.bind(this)}>{this.state.isOpen ? <Icon type="double-left"/> :
-              <Icon type="double-right"/>}</Button>
+            <Button onClick={this.handleToogle.bind(this)}>{this.state.isOpen ? <Icon type="double-left" /> :
+              <Icon type="double-right" />}</Button>
           </Row>
           <Row className='menu'>
             <Menu selectedKeys={[this.state.current]}
-                  style={{width: this.state.isOpen ? 240 : 70}}
-                  mode={this.state.isOpen ? 'inline' : 'vertical'}>
+              style={{ width: this.state.isOpen ? 240 : 70 }}
+              mode={this.state.isOpen ? 'inline' : 'vertical'}>
               {menuItem}
             </Menu>
           </Row>

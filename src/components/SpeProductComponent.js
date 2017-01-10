@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert} from 'antd';
+import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert } from 'antd';
 import CommCrudtable from './ui/CommCrudtableComponent';
 import Config from 'config';
 import request from '../Request';
@@ -9,14 +9,14 @@ import request from '../Request';
 require('styles//SpeProduct.less');
 
 class SpeProductComponent extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
 
     }
 
   }
-  getColums(){
+  getColums() {
     return [
       {
         dataIndex: 'id',
@@ -28,11 +28,11 @@ class SpeProductComponent extends React.Component {
       {
         dataIndex: 'icon',
         title: '图标',
-        render(text,reocrd){
+        render(text, reocrd) {
           text = reocrd['Product'].icon;
-          return(
-            <Col style={{width:50}}>
-              <img src={Config.host+(text == null ? df_logo : text+'?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
+          return (
+            <Col style={{ width: 50 }}>
+              <img src={Config.host + (text == null ? df_logo : text + '?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{ borderRadius: '50%', overflow: 'hidden' }} />
             </Col>
           );
         }
@@ -55,10 +55,10 @@ class SpeProductComponent extends React.Component {
           value: 'didi',
           text: '嘀嘀'
         }],
-        render(text,reocrd){
+        render(text, reocrd) {
           text = reocrd['Product'].channel;
-          return(
-            <Col style={{width:50}}>
+          return (
+            <Col style={{ width: 50 }}>
               {text}
             </Col>
           );
@@ -66,20 +66,21 @@ class SpeProductComponent extends React.Component {
       },
       {
         dataIndex: 'productId',
-        title: ' 选择产品',
+        title: ' 产品',
         dataType: 'cascader',
         showable: false,
         editable: true,
-        chlidOptionsType:['channel','productId'],
-        dataWarp:(data)=>{
+        chlidOptionsType: ['channel', 'productId'],
+        dataWarp: (data) => {
           let list = data.list || [];
           let didi = [];
           let uber = []
-          list.forEach((item)=>{
+          list.forEach((item) => {
             item.label = item.name;
-            if(item.channel == 'didi'){
+            item.value = item.id;
+            if (item.channel == 'didi') {
               didi.push(item);
-            }else if(item.channel == 'uber'){
+            } else if (item.channel == 'uber') {
               uber.push(item);
             }
           });
@@ -94,7 +95,7 @@ class SpeProductComponent extends React.Component {
           }];
           return data;
         },
-        chlidOptionsUrl: Config.host+'/api/admin/products/search',
+        chlidOptionsUrl: Config.host + '/api/admin/products/search',
       },
       {
         dataIndex: 'desc',
@@ -113,10 +114,24 @@ class SpeProductComponent extends React.Component {
         <CommCrudtable
           columns={this.getColums()}
           operaUrl={{
-            loadDataUrl:Config.host+'/api/admin/special-products/search',
-            saveOrUpdateUrl:Config.host+'/api/admin/products/save',
-            delUrl:Config.host+'/api/admin/products/',
+            loadDataUrl: Config.host + '/api/admin/special-products/search',
+            saveOrUpdateUrl: Config.host + '/api/admin/special-products/save',
+            delUrl: Config.host + '/api/admin/special-products/',
           }}
+          dataWarp={(result) => {
+            result.list.forEach((item) => {
+              let id = item.id;
+              Object.assign(item, item.Product, {
+                id: item.id,
+                productId: item.Product.id
+              });
+            });
+            return result;
+          } }
+          dataFormat={(obj) => {
+            delete obj.channel;
+            return obj;
+          } }
           searchType='open'
           pagination={true}
           showDefaultBtn={{
@@ -124,7 +139,7 @@ class SpeProductComponent extends React.Component {
             showEditBtn: true,
             showDeleteBtn: true
           }}
-        />
+          />
       </div>
     );
   }

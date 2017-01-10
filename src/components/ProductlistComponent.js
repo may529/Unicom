@@ -47,10 +47,10 @@ class ProductlistComponent extends React.Component {
         uploadType: 'image',
         showable: true,
         editable: true,
-        render(text,reocrd){
-          return(
-            <Col style={{width:50}}>
-              <img src={Config.host+(text == null ? df_logo : text+'?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{borderRadius:'50%',overflow:'hidden'}}/>
+        render(text, reocrd) {
+          return (
+            <Col style={{ width: 50 }}>
+              <img src={(text == null ? df_logo : text + '?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{ borderRadius: '50%', overflow: 'hidden' }} />
             </Col>
           );
         }
@@ -62,12 +62,7 @@ class ProductlistComponent extends React.Component {
         dataType: 'text',
         showable: true,
         editable: true, //是否可以编辑
-        validata: /^[a-z0-9]{1,20}$/i,
-        validataMsgs: {
-          tips: '20个字符以内,仅限英文或数字',
-          emptyMsg: '请输入登录名',
-          errorMsg: '20个字符以内,仅限英文或数字'
-        },
+
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true, //true 为显示查询框  false 不显示
           name: 'name' //查询的字段名称
@@ -78,12 +73,12 @@ class ProductlistComponent extends React.Component {
         dataType: 'text',
         showable: true,
         editable: true, //是否可以编辑
-        validata: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,
-        validataMsgs: {
-          tips: '请按价格格式填写',
-          emptyMsg: '请输入产品价格',
-          errorMsg: '请按价格格式填写'
-        }
+        // validata: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,
+        // validataMsgs: {
+        //   tips: '请按价格格式填写',
+        //   emptyMsg: '请输入产品价格',
+        //   errorMsg: '请按价格格式填写'
+        // }
       }, {
         dataIndex: 'categoryId',
         title: '产品分类',
@@ -94,9 +89,8 @@ class ProductlistComponent extends React.Component {
           isDispaly: true,
           name: 'categoryId' //查询的字段名称
         },
-        dataWarp:(data)=>{
-          console.log(data);
-          data.list.forEach((item)=>{
+        dataWarp: (data) => {
+          data.list.forEach((item) => {
             item.label = item.name;
             item.value = item.id;
             item.text = item.name;
@@ -104,12 +98,12 @@ class ProductlistComponent extends React.Component {
           window.CATEGORY = data.list;
           return data;
         },
-        chlidOptionsUrl: Config.host+'/api/admin/categories',
-        chlidOptions:[],
-        render(text,record){
-          console.log(text,window.CATEGORY);
-          console.log(((window.CATEGORY||[]).find(x=>x.id === text) ||{}).name || "");
-          return ((window.CATEGORY||[]).find(x=>x.id === text) ||{}).name || "";
+        chlidOptionsUrl: Config.host + '/api/admin/categories',
+        chlidOptions: [],
+        render(text, record) {
+          // console.log(text, window.CATEGORY);
+          // console.log(((window.CATEGORY || []).find(x => x.id === text) || {}).name || "");
+          return ((window.CATEGORY || []).find(x => x.id === text) || {}).name || "";
         }
       }, {
         dataIndex: 'desc',
@@ -121,7 +115,6 @@ class ProductlistComponent extends React.Component {
         dataIndex: 'channel',
         title: '渠道来源',
         dataType: 'select',
-        sorter: true,
         editable: true, //是否可以编辑
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true,
@@ -164,9 +157,26 @@ class ProductlistComponent extends React.Component {
         <CommCrudtable
           columns={this.getColums()}
           operaUrl={{
-            loadDataUrl:Config.host+'/api/admin/products/search',
-            saveOrUpdateUrl:Config.host+'/api/admin/products/save',
-            delUrl:Config.host+'/api/admin/products/',
+            loadDataUrl: Config.host + '/api/admin/products/search',
+            saveOrUpdateUrl: Config.host + '/api/admin/products/save',
+            delUrl: Config.host + '/api/admin/products/',
+          }}
+          dataWarp={(result) => {
+            result.list.forEach((item) => {
+              item.icon = Config.host + item.icon;
+              item.pics = item.pics.map((pic)=>{
+                return Config.host + pic;
+              });
+            });
+            return result;
+          } }
+          dataFormat={(obj)=>{
+            console.log(obj);
+            obj['icon'] = obj['icon'].substring(Config.host.length);
+            obj['pics'] = obj['pics'].map((pic)=>{
+              return pic.substring(Config.host.length);
+            });
+            return obj;
           }}
           searchType='open'
           pagination={true}
