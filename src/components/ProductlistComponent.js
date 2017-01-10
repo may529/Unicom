@@ -100,6 +100,10 @@ class ProductlistComponent extends React.Component {
         },
         chlidOptionsUrl: Config.host + '/api/admin/categories',
         chlidOptions: [],
+        chlidOptionsType:{
+          text:'name',
+          value:'id'
+        },
         render(text, record) {
           // console.log(text, window.CATEGORY);
           // console.log(((window.CATEGORY || []).find(x => x.id === text) || {}).name || "");

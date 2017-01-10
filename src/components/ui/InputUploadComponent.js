@@ -37,6 +37,11 @@ class InputUploadComponent extends React.Component {
     // let key = parseInt(Date.now() + '' + (Math.floor(Math.random() * 100000000000000000 % 100000000)));
     // let suffix = file.name.match(/\.[^\.]+$/);
     // qiniuInfo.key = key + suffix;
+    const isLt2M = file.size / 1024 < 512;
+    if (!isLt2M) {
+      message.error('图片不能大于512k');
+      return false;
+    }
   }
   handleChange(info) {
     // console.log(info.file.status);

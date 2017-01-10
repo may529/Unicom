@@ -41,7 +41,7 @@ class RichTextEditorComponent extends React.Component {
       //表单值初始化编辑器内容
       let  values = this.props.form.getFieldsValue();
       editor.$txt.html(values[this.props.item.dataIndex]);
-      editor.$valueContainer.on('blur',(event)=>{
+      editor.$valueContainer.off('blur').on('blur',(event)=>{
         // console.log(editor.$editorContainer,event.relatedTarget,$.contains(editor.$editorContainer[0],event.relatedTarget));
         if($.contains(editor.$editorContainer[0],event.relatedTarget)){
           return;
@@ -66,11 +66,10 @@ class RichTextEditorComponent extends React.Component {
     // }
   }
   componentWillReceiveProps(){
-    //this.initContent();
+    this.initContent();
   }
   componentDidMount(){
     let editor = new wangEditor(this.state.id);
-
     //菜单配置
     editor.config.menus = [
       // 'source',
