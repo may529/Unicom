@@ -29,7 +29,7 @@ class SpeProductComponent extends React.Component {
         dataIndex: 'icon',
         title: '图标',
         render(text, reocrd) {
-          text = reocrd['Product'].icon;
+          text = reocrd['product'].icon;
           return (
             <Col style={{ width: 50 }}>
               <img src={Config.host + (text == null ? df_logo : text + '?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{ borderRadius: '50%', overflow: 'hidden' }} />
@@ -56,7 +56,7 @@ class SpeProductComponent extends React.Component {
           text: '嘀嘀'
         }],
         render(text, reocrd) {
-          text = reocrd['Product'].channel;
+          text = reocrd['product'].channel;
           return (
             <Col style={{ width: 50 }}>
               {text}
@@ -123,7 +123,7 @@ class SpeProductComponent extends React.Component {
               let id = item.id;
               Object.assign(item, item.Product, {
                 id: item.id,
-                productId: item.Product.id
+                productId: item.product.id
               });
             });
             return result;

@@ -50,7 +50,7 @@ class ProductlistComponent extends React.Component {
         render(text, reocrd) {
           return (
             <Col style={{ width: 50 }}>
-              <img src={(text == null ? df_logo : text + '?imageView2/1/w/50/h/50')} height='100%' width='100%' style={{ borderRadius: '50%', overflow: 'hidden' }} />
+              <img src={(text == null ? df_logo : text + '?imageView2/1/w/50/h/50')} height='50' width='50' style={{ borderRadius: '50%', overflow: 'hidden' }} />
             </Col>
           );
         }
