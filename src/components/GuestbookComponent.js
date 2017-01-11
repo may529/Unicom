@@ -29,6 +29,16 @@ class GuestbookComponent extends React.Component {
         dataIndex: 'createdAt',
         dataType: 'date',
         format: 'yyyy-MM-dd HH:mm:ss',
+        render(text, reocrd) {
+          text = new Date(reocrd['createdAt']);
+          let Y = text.getFullYear() + '-';
+          let M = (text.getMonth()+1 < 10 ? '0'+(text.getMonth()+1) : text.getMonth()+1) + '-';
+          let D = text.getDate() + ' ';
+          let h = text.getHours() + ':';
+          let m = text.getMinutes() + ':';
+          let s = text.getSeconds();
+          return Y+M+D+h+m+s;
+        }
       },
       {
         dataIndex: 'icon',
