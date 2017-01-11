@@ -58,10 +58,10 @@ class NavBarComponent extends React.Component {
     var params = values;
     requset({
       type: 'post',
-      url: Config.host + '/custom/pwd/edit',
+      url: Config.host + '/api/admin/common/modify-pass',
       data: {
-        newPwd: params.newPwd,
-        oldPwd: params.oldPwd
+        newPass: params.newPass,
+        oldPass: params.oldPass
       },
       success: ()=> {
         this.setState({
@@ -69,7 +69,7 @@ class NavBarComponent extends React.Component {
         });
         Modal.success({
           title: '密码修改成功',
-          content: '您的新密码为:' + params.newPwd,
+          content: '您的新密码为:' + params.newPass,
           onOk() {
             SS.clear();
             LS.clear();
@@ -147,7 +147,7 @@ class NavBarComponent extends React.Component {
   getPwdColumns() {
     return ([{
       title: '原密码',
-      dataIndex: 'oldPwd',
+      dataIndex: 'oldPass',
       dataType: 'password',
       validata: new RegExp(Config.validateRegExp.password), //本地正则验证
       editable: true,
@@ -157,7 +157,7 @@ class NavBarComponent extends React.Component {
       }
     }, {
       title: '新密码',
-      dataIndex: 'newPwd',
+      dataIndex: 'newPass',
       dataType: 'password',
       editable: true,
       validata: new RegExp(Config.validateRegExp.password), //本地正则验证
@@ -173,7 +173,7 @@ class NavBarComponent extends React.Component {
       dataType: 'password',
       editable: true,
       validata: new RegExp(Config.validateRegExp.password), //本地正则验证
-      bindValidata: 'newPwd',  //绑定字段(和某值相同,常用用于确认输入)
+      bindValidata: 'newPass',  //绑定字段(和某值相同,常用用于确认输入)
       validataMsgs: {
         tips: '',  //选中输入框时的提示信息
         errorMsg: '两次输入密码不一致'
@@ -296,6 +296,8 @@ class NavBarComponent extends React.Component {
                 getPopupContainer={()=>document.querySelector('.nav-user')}
                 overlay={(
                   <Menu className='nav-dropdown-menu'>
+                    <Menu.Item><a onClick={()=>{this.setState({modifyShowType:'modify',formTitle:'修改密码',formColumns:this.getPwdColumns()});}}><Icon type='lock' />修改密码</a></Menu.Item>
+                    <Menu.Divider />
                     <Menu.Item><a target='_blank' onClick={this.loginOut.bind(this)}><Icon
                       type='logout'/>注销</a></Menu.Item>
                   </Menu>
