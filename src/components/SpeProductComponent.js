@@ -38,6 +38,18 @@ class SpeProductComponent extends React.Component {
         }
       },
       {
+        dataIndex: 'productname',
+        title: '产品名称',
+        render(text, reocrd) {
+          text = reocrd['product'].name;
+          return (
+            <Col style={{ width: 100 }}>
+              {text}
+            </Col>
+          );
+        }
+      },
+      {
         dataIndex: 'channel',
         title: '渠道来源',
         dataType: 'select',

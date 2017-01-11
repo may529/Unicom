@@ -25,6 +25,12 @@ class GuestbookComponent extends React.Component {
         showable: false,
       },
       {
+        title: '留言时间',
+        dataIndex: 'createdAt',
+        dataType: 'date',
+        format: 'yyyy-MM-dd HH:mm:ss',
+      },
+      {
         dataIndex: 'icon',
         title: '图标',
         render(text, reocrd) {
@@ -37,7 +43,7 @@ class GuestbookComponent extends React.Component {
         }
       },
       {
-        dataIndex: 'name',
+        dataIndex: 'productname',
         title: '产品名称',
         dataType: 'text',
         showable: true,
@@ -53,9 +59,16 @@ class GuestbookComponent extends React.Component {
         }
       },
       {
+        dataIndex: 'name',
+        title: '留言者姓名',
+        dataType: 'text',
+        showable: true,
+        disabled:true,
+        editable: true,
+      },
+      {
         dataIndex: 'email',
         title: 'email',
-        width: '15%',
         dataType: 'text',
         disabled:true,
         showable: true,
@@ -70,12 +83,38 @@ class GuestbookComponent extends React.Component {
       },
       {
         dataIndex: 'content',
-        title: '留言处理',
-        width: '15%',
+        title: '留言备注',
         dataType: 'textarea',
-        showable: true,
+        showable: false,
         editable: true
       },
+      {
+        dataIndex: 'status',
+        dataType: 'select',
+        showable: true,
+        editable: true,
+        disabled:true,
+        title: '状态',
+        searchable: { //是否显示在右侧的搜索区域
+          isDispaly: true,
+          name: 'status' //查询的字段名称
+        },
+        chlidOptions: [{
+          key: '1',
+          value: 0,
+          text: '未处理'
+        }, {
+          key: '2',
+          value: 1,
+          text: '已处理'
+        }],
+        render(text, record) {
+          text=record.status==0?"未处理":"已处理"
+          let color=record.status==0?"#f50":"#87d068"
+          return <Tag color={color}>{text}</Tag>;
+        },
+      },
+
     ]
   }
 
@@ -89,10 +128,12 @@ class GuestbookComponent extends React.Component {
             loadDataUrl: Config.host + '/api/admin/messages/search',
             saveOrUpdateUrl: Config.host + '/api/admin/messages/deal',
           }}
+          searchType='open'
           pagination={true}
           showDefaultBtn={{
             showAddBtn: false,
             showEditBtn: true,
+            showDeleteBtn: false,
             showSelection:false,
           }}
         />
