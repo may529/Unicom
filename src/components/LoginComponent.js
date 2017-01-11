@@ -54,13 +54,13 @@ class LoginComponent extends React.Component {
       });
       return false;
     }
-    if (!values.validateCode) {
-      this.setState({
-        isShow: 'msg-warn',
-        msg: '请输入验证码'
-      });
-      return false;
-    }
+    // if (!values.validateCode) {
+    //   this.setState({
+    //     isShow: 'msg-warn',
+    //     msg: '请输入验证码'
+    //   });
+    //   return false;
+    // }
     return true;
   }
 
@@ -86,7 +86,7 @@ class LoginComponent extends React.Component {
       data: {
         username: params.username,
         password: params.password,
-        validateCode: params.validateCode,
+        // validateCode: params.validateCode,
         random: SS.get(Config.randomStr)
       },
       success: (data)=> {
@@ -158,12 +158,12 @@ class LoginComponent extends React.Component {
                             <Input type='password' autoComplete='off' placeholder='请输入密码'/>
                           )}
                         </Form.Item>
-                        <Form.Item className='login-item'>
-                          {getFieldDecorator('validateCode')(
-                            <Input type='text' className='item-verycode' autoComplete='off' placeholder='验证码'/>
-                          )}
-                          <span><img src={ this.state.imgurl } title='看不清？换一个' className='checkimg' onClick={this.loadVeryImg.bind(this)}/></span>
-                        </Form.Item>
+                        {/*<Form.Item className='login-item'>*/}
+                          {/*{getFieldDecorator('validateCode')(*/}
+                            {/*<Input type='text' className='item-verycode' autoComplete='off' placeholder='验证码'/>*/}
+                          {/*)}*/}
+                          {/*<span><img src={ this.state.imgurl } title='看不清？换一个' className='checkimg' onClick={this.loadVeryImg.bind(this)}/></span>*/}
+                        {/*</Form.Item>*/}
                         <Button className='btn btn-primary' loading={this.state.loading} htmlType='submit'
                                 type='primary' id='loginBtn'>登 &nbsp;&nbsp;&nbsp;&nbsp;录</Button>
                         <Form.Item className='login-foot'>

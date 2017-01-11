@@ -74,7 +74,7 @@ class SpeProductComponent extends React.Component {
         dataWarp: (data) => {
           let list = data.list || [];
           let didi = [];
-          let uber = []
+          let uber = [];
           list.forEach((item) => {
             item.label = item.name;
             item.value = item.id;

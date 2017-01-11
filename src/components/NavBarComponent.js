@@ -289,21 +289,13 @@ class NavBarComponent extends React.Component {
       <Row>
         <Row>
           <div className='navbar-component'>
-            <div className='nav-logo'><img className='logo' src={mycos_logo} alt='宁波市高校办学绩效数据库' height='45px'/></div>
+            <div className='nav-logo'><img className='logo' src={mycos_logo} alt='中国联通网上支持系统' height='45px'/></div>
             <span className="school-name">{this.state.data.schoolName ? this.state.data.schoolName : ''}</span>
             <div className='nav-user'>
               <Dropdown
                 getPopupContainer={()=>document.querySelector('.nav-user')}
                 overlay={(
                   <Menu className='nav-dropdown-menu'>
-                    <Menu.Item><a onClick={()=> {
-                      this.loadData();
-                      this.setState({modifyShowType: 'modify', formTitle: '个人资料', formColumns: this.getUserColumns()});
-                    }}><Icon type='user'/>个人资料</a></Menu.Item>
-                    <Menu.Item><a onClick={()=> {
-                      this.setState({modifyShowType: 'modify', formTitle: '修改密码', formColumns: this.getPwdColumns()});
-                    }}><Icon type='lock'/>修改密码</a></Menu.Item>
-                    <Menu.Divider />
                     <Menu.Item><a target='_blank' onClick={this.loginOut.bind(this)}><Icon
                       type='logout'/>注销</a></Menu.Item>
                   </Menu>
