@@ -15,6 +15,7 @@ import Login from './components/LoginComponent';
 import Welcome from './components/WelcomeComponent';
 import Productlist from './components/ProductlistComponent';
 import SpeProduct from './components/SpeProductComponent';
+import Guestbook from './components/GuestbookComponent';
 import AdManger from './components/AdMangerComponent';
 import SS from 'parsec-ss';
 
@@ -40,6 +41,7 @@ class App extends React.Component {
           <IndexRoute component={Welcome} />
           <Router path='/productlist' breadcrumbName='产品管理' component={Productlist} />
           <Router path='/speproduct' breadcrumbName='首页置顶' component={SpeProduct} />
+          <Router path='/guestbook' breadcrumbName='留言管理' component={Guestbook} />
           {/*<Router path='/ad' breadcrumbName='广告管理' component={AdManger} />*/}
         </Route>
       </Router>

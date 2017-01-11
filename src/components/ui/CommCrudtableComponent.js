@@ -520,6 +520,10 @@ class CommCrudtableComponent extends React.Component {
     if (!!this.props.filter.key) {
       return false;
     }
+    if(this.props.showDefaultBtn.showSelection === false){
+      return false;
+    }
+
     if (this.props.showDefaultBtn.showDeleteBtn == false) {
       var flag = true;
       for (let i = 0; i < this.state.actionItem.length; i++) {
