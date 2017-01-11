@@ -40,7 +40,7 @@ class App extends React.Component {
         <Route path='/' onEnter={this.handleAuth} component={Main} breadcrumbName='首页'>
           <IndexRoute component={Welcome} />
           <Router path='/productlist' breadcrumbName='产品管理' component={Productlist} />
-          <Router path='/speproduct' breadcrumbName='首页置顶' component={SpeProduct} />
+          <Router path='/speproduct' breadcrumbName='首页推荐' component={SpeProduct} />
           <Router path='/guestbook' breadcrumbName='留言管理' component={Guestbook} />
           {/*<Router path='/ad' breadcrumbName='广告管理' component={AdManger} />*/}
         </Route>
