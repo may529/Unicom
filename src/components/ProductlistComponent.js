@@ -131,7 +131,7 @@ class ProductlistComponent extends React.Component {
         }, {
           key: '2',
           value: 'didi',
-          text: '嘀嘀'
+          text: '滴滴'
         }, {
           key: '3',
           value: 'other1',

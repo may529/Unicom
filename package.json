@@ -2,7 +2,7 @@
   "name": "Unicom",
   "private": true,
   "version": "0.0.1",
-  "description": "联通uber项目后台",
+  "description": "重庆联通网约车行业线上支撑平台",
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
