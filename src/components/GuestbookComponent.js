@@ -70,7 +70,7 @@ class GuestbookComponent extends React.Component {
       },
       {
         dataIndex: 'name',
-        title: '留言者姓名',
+        title: '留言者',
         dataType: 'text',
         showable: true,
         disabled:true,
