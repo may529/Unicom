@@ -93,7 +93,7 @@ class GuestbookComponent extends React.Component {
       },
       {
         dataIndex: 'content',
-        title: '留言备注',
+        title: '处理信息',
         dataType: 'textarea',
         showable: false,
         editable: true
