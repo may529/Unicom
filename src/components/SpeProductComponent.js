@@ -66,6 +66,14 @@ class SpeProductComponent extends React.Component {
           key: '2',
           value: 'didi',
           text: '嘀嘀'
+        }, {
+          key: '3',
+          value: 'other1',
+          text: '其他1'
+        }, {
+          key: '4',
+          value: 'other2',
+          text: '其他2'
         }],
         render(text, reocrd) {
           text = reocrd['product'].channel;

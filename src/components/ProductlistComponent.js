@@ -132,6 +132,14 @@ class ProductlistComponent extends React.Component {
           key: '2',
           value: 'didi',
           text: '嘀嘀'
+        }, {
+          key: '3',
+          value: 'other1',
+          text: '其他1'
+        }, {
+          key: '4',
+          value: 'other2',
+          text: '其他2'
         }],
       }, {
         dataIndex: 'homeTop',
@@ -144,13 +152,66 @@ class ProductlistComponent extends React.Component {
         title: '详情',
         dataType: 'richtext',
         showable: false,
-        editable: true,
+        editable: (record)=>{
+          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
+        },
       }, {
         dataIndex: 'spec',
         title: '规格',
         dataType: 'richtext',
         showable: false,
-        editable: true,
+        editable: (record)=>{
+          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
+        },
+      },{
+        dataIndex: 'content',
+        title: '资费详情',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===1||record.categoryId ===5 ;
+        },
+      }, {
+        dataIndex: 'spec',
+        title: '其他',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===1||record.categoryId ===5 ;
+        },
+      },{
+        dataIndex: 'content',
+        title: '产品简介',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===2||record.categoryId ===6 ;
+        },
+      }, {
+        dataIndex: 'spec',
+        title: '手机参数',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===2||record.categoryId ===6 ;
+        },
+      }
+      ,{
+        dataIndex: 'content',
+        title: '产品简介',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===4 ;
+        },
+      }, {
+        dataIndex: 'spec',
+        title: '规格',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===4 ;
+        },
       }
     ]
   }

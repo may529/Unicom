@@ -138,6 +138,12 @@ class GuestbookComponent extends React.Component {
             loadDataUrl: Config.host + '/api/admin/messages/search',
             saveOrUpdateUrl: Config.host + '/api/admin/messages/deal',
           }}
+          dataWarp={(result)=>{
+            result.list.forEach((item)=>{
+              item.productname = item['product'].name;
+            });
+            return result;
+          }}
           searchType='open'
           pagination={true}
           showDefaultBtn={{

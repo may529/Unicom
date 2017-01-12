@@ -125,7 +125,7 @@ class LoginComponent extends React.Component {
               <div className='login-form'>
                 <div className='login-box'>
                   <div className='mt'>
-                    <h1>联通在线支撑平台管理系统</h1>
+                    <h1>重庆联通线上支撑平台管理系统</h1>
                     <div className='extra-r'>
                       <div className='regist-link'>
                       </div>
