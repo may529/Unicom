@@ -77,9 +77,9 @@ class GuestbookComponent extends React.Component {
         editable: true,
       },
       {
-        dataIndex: 'email',
-        title: 'email',
-        dataType: 'text',
+        dataIndex: 'content',
+        title: '留言内容',
+        dataType: 'textarea',
         disabled:true,
         showable: true,
         editable: true
@@ -92,8 +92,8 @@ class GuestbookComponent extends React.Component {
         editable: true
       },
       {
-        dataIndex: 'content',
-        title: '处理信息',
+        dataIndex: 'remark',
+        title: '处理意见',
         dataType: 'textarea',
         showable: false,
         editable: true

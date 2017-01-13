@@ -7,7 +7,13 @@ import Config from 'config';
 import request from '../Request';
 
 require('styles//Productlist.less');
-
+const operaItem = [{
+  title: '预览',
+  icon: 'eye',
+  call: (record, instance)=> {
+    window.location.href="https://unicom.parsec.com.cn/mobile/detail.html?t="+record.channel+"&id="+record.id;
+  }
+}];
 class ProductlistComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +21,7 @@ class ProductlistComponent extends React.Component {
 
     }
   }
+
   getColums() {
     return [
       {
@@ -134,14 +141,6 @@ class ProductlistComponent extends React.Component {
           key: '2',
           value: 'didi',
           text: '滴滴'
-        }, {
-          key: '3',
-          value: 'other1',
-          text: '其他1'
-        }, {
-          key: '4',
-          value: 'other2',
-          text: '其他2'
         }],
       }, {
         dataIndex: 'homeTop',
@@ -217,7 +216,6 @@ class ProductlistComponent extends React.Component {
       }
     ]
   }
-
   render() {
     return (
       <div className="productlist-component">
@@ -228,6 +226,7 @@ class ProductlistComponent extends React.Component {
             saveOrUpdateUrl: Config.host + '/api/admin/products/save',
             delUrl: Config.host + '/api/admin/products/',
           }}
+          operaItem={operaItem}
           dataWarp={(result) => {
             result.list.forEach((item) => {
               item.icon = Config.host + item.icon;
