@@ -11,7 +11,7 @@ const operaItem = [{
   title: '预览',
   icon: 'eye',
   call: (record, instance)=> {
-    window.location.href="https://unicom.parsec.com.cn/mobile/detail.html?t="+record.channel+"&id="+record.id;
+    window.open("https://unicom.parsec.com.cn/mobile/detail.html?t="+record.channel+"&id="+record.id);
   }
 }];
 class ProductlistComponent extends React.Component {
