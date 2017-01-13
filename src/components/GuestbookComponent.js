@@ -25,7 +25,7 @@ class GuestbookComponent extends React.Component {
         showable: false,
       },
       {
-        title: '留言时间',
+        title: '预定时间',
         dataIndex: 'createdAt',
         dataType: 'date',
         format: 'yyyy-MM-dd HH:mm:ss',
