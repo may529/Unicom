@@ -40,7 +40,8 @@ module.exports = {
     }
   },
   externals:{
-    wangEditor:'wangEditor'
+    wangEditor:'wangEditor',
+    echarts:'echarts',
   },
   postcss: function () {
     return [

@@ -91,6 +91,7 @@ class MenuBarComponent extends React.Component {
         { 'urlName': '首页推荐', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct' },
         // { 'urlName': '广告管理', 'icon': '&#xe603;', 'id': 4, 'url': '/ad' },
         { 'urlName': '订单处理', 'icon': '&#xe603;', 'id': 5, 'url': '/guestbook' },
+        { 'urlName': '数据统计', 'icon': '&#xe603;', 'id': 6, 'url': '/statistics'},
       ],
       'status': 0
     };
