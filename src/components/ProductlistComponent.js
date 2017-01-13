@@ -62,7 +62,6 @@ class ProductlistComponent extends React.Component {
         dataType: 'text',
         showable: true,
         editable: true, //是否可以编辑
-
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true, //true 为显示查询框  false 不显示
           name: 'name' //查询的字段名称
@@ -123,6 +122,9 @@ class ProductlistComponent extends React.Component {
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true,
           name: 'channel' //查询的字段名称
+        },
+        render(text, record) {
+          return record.channel=="didi"?"嘀嘀":record.channel
         },
         chlidOptions: [{
           key: '1',
