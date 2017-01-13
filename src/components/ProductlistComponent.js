@@ -74,18 +74,6 @@ class ProductlistComponent extends React.Component {
           name: 'name' //查询的字段名称
         }
       }, {
-        dataIndex: 'price',
-        title: '产品价格',
-        dataType: 'text',
-        showable: true,
-        editable: true, //是否可以编辑
-        // validata: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,
-        // validataMsgs: {
-        //   tips: '请按价格格式填写',
-        //   emptyMsg: '请输入产品价格',
-        //   errorMsg: '请按价格格式填写'
-        // }
-      }, {
         dataIndex: 'categoryId',
         title: '产品分类',
         dataType: 'select',
@@ -115,6 +103,21 @@ class ProductlistComponent extends React.Component {
           // console.log(((window.CATEGORY || []).find(x => x.id === text) || {}).name || "");
           return ((window.CATEGORY || []).find(x => x.id === text) || {}).name || "";
         }
+      }, {
+        dataIndex: 'price',
+        title: '产品价格',
+        dataType: 'text',
+        showable: true,
+        //editable: true, //是否可以编辑
+        // validata: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,
+        // validataMsgs: {
+        //   tips: '请按价格格式填写',
+        //   emptyMsg: '请输入产品价格',
+        //   errorMsg: '请按价格格式填写'
+        // }
+        editable: (record)=>{
+          return record.categoryId !=3 ;
+        },
       }, {
         dataIndex: 'desc',
         title: '摘要',
@@ -154,7 +157,7 @@ class ProductlistComponent extends React.Component {
         dataType: 'richtext',
         showable: false,
         editable: (record)=>{
-          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
+          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=3 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
         },
       }, {
         dataIndex: 'spec',
@@ -162,7 +165,7 @@ class ProductlistComponent extends React.Component {
         dataType: 'richtext',
         showable: false,
         editable: (record)=>{
-          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
+          return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=3 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
         },
       },{
         dataIndex: 'content',
@@ -174,7 +177,7 @@ class ProductlistComponent extends React.Component {
         },
       }, {
         dataIndex: 'spec',
-        title: '其他',
+        title: '办理流程',
         dataType: 'richtext',
         showable: false,
         editable: (record)=>{
@@ -207,11 +210,27 @@ class ProductlistComponent extends React.Component {
         },
       }, {
         dataIndex: 'spec',
-        title: '规格',
+        title: '参数',
         dataType: 'richtext',
         showable: false,
         editable: (record)=>{
           return record.categoryId ===4 ;
+        },
+      },{
+        dataIndex: 'content',
+        title: '号码明细',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===3 ;
+        },
+      }, {
+        dataIndex: 'spec',
+        title: '办理流程',
+        dataType: 'richtext',
+        showable: false,
+        editable: (record)=>{
+          return record.categoryId ===3 ;
         },
       }
     ]
