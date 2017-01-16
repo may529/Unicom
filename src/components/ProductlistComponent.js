@@ -94,7 +94,7 @@ class ProductlistComponent extends React.Component {
           name: 'channel' //查询的字段名称
         },
         render(text, record) {
-          return record.channel=="didi"?"嘀嘀":record.channel
+          return record.channel=="didi"?"滴滴":record.channel
         },
         chlidOptions: [{
           key: '1',
