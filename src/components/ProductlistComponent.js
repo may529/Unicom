@@ -168,7 +168,7 @@ class ProductlistComponent extends React.Component {
         title: '产品价格',
         dataType: 'text',
         showable: true,
-        validataEmpty:false,
+        // validataEmpty:false,
         // validata: (value)=>{
         //   if(!value){
         //     return true;
