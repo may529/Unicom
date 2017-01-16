@@ -126,6 +126,10 @@ class SpeProductComponent extends React.Component {
         dataType: 'textarea',
         showable: true,
         editable: true,
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请填写产品摘要',
+        },
       },
     ]
   }
