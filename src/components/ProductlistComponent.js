@@ -169,16 +169,16 @@ class ProductlistComponent extends React.Component {
         dataType: 'text',
         showable: true,
         validataEmpty:false,
-        validata: (value)=>{
-          if(!value){
-            return true;
-          }
-          return /(^(0|([1-9]\d{0,9}(\.\d{2})+))$)/.test(value)
-        },
-        validataMsgs: {
-          tips: '请按价格格式填写',
-          errorMsg: '请按价格格式填写'
-        },
+        // validata: (value)=>{
+        //   if(!value){
+        //     return true;
+        //   }
+        //   return /(^(0|([1-9]\d{0,9}(\.\d{2})+))$)/.test(value)
+        // },
+        // validataMsgs: {
+        //   tips: '请按价格格式填写',
+        //   errorMsg: '请按价格格式填写'
+        // },
         editable: (record)=>{
           return record.categoryId !=3 ;
         },
