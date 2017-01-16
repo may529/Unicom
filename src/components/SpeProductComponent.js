@@ -78,7 +78,7 @@ class SpeProductComponent extends React.Component {
       },
       {
         dataIndex: 'productId',
-        title: ' 产品',
+        title: '产品',
         dataType: 'cascader',
         showable: false,
         editable: true,
@@ -96,15 +96,21 @@ class SpeProductComponent extends React.Component {
               uber.push(item);
             }
           });
-          data.list = [{
-            value: 'uber',
-            label: 'Uber',
-            children: uber,
-          }, {
-            value: 'didi',
-            label: '滴滴',
-            children: didi,
-          }];
+          data.list = [];
+          if(didi.length >0){
+            data.list.push({
+              value: 'didi',
+              label: '滴滴',
+              children: didi,
+            });
+          }
+          if(uber.length >0){
+            data.list.push({
+              value: 'uber',
+              label: 'Uber',
+              children: uber,
+            });
+          }
           return data;
         },
         chlidOptionsUrl: Config.host + '/api/admin/products/search',

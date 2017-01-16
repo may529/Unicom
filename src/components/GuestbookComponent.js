@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert } from 'antd';
+import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert,message } from 'antd';
 import CommCrudtable from './ui/CommCrudtableComponent';
 import Config from 'config';
 import request from '../Request';
@@ -59,6 +59,10 @@ class GuestbookComponent extends React.Component {
         showable: true,
         disabled:true,
         editable: true,
+        searchable: { //是否显示在右侧的搜索区域
+          isDispaly: true, //true 为显示查询框  false 不显示
+          name: 'name' //查询的字段名称
+        },
         render(text, reocrd) {
           text = reocrd['product'].name;
           return (
@@ -70,7 +74,7 @@ class GuestbookComponent extends React.Component {
       },
       {
         dataIndex: 'name',
-        title: '留言者',
+        title: '姓名',
         dataType: 'text',
         showable: true,
         disabled:true,
@@ -92,8 +96,16 @@ class GuestbookComponent extends React.Component {
         editable: true
       },
       {
+        dataIndex: 'recommendation',
+        title: ' 推荐人',
+        dataType: 'text',
+        disabled:true,
+        showable: true,
+        editable: true
+      },
+      {
         dataIndex: 'remark',
-        title: '处理意见',
+        title: '处理信息',
         dataType: 'textarea',
         showable: false,
         editable: true
@@ -124,7 +136,73 @@ class GuestbookComponent extends React.Component {
           return <Tag color={color}>{text}</Tag>;
         },
       },
-
+      {
+        dataIndex: 'channel',
+        title: '渠道来源',
+        dataType: 'select',
+        showable: false,
+        searchable: { //是否显示在右侧的搜索区域
+          isDispaly: true,
+          name: 'channel' //查询的字段名称
+        },
+        chlidOptions: [{
+          key: '1',
+          value: 'uber',
+          text: 'uber'
+        }, {
+          key: '2',
+          value: 'didi',
+          text: '滴滴'
+        },{
+          key: '3',
+          value: '其他1',
+          text: '其他1'
+        },{
+          key: '4',
+          value: '其他2',
+          text: '其他2'
+        }]
+      },
+      {
+        dataIndex: 'categoryId',
+        title: '产品分类',
+        dataType: 'select',
+        showable: false,
+        searchable: { //是否显示在右侧的搜索区域
+          isDispaly: true,
+          name: 'categoryId' //查询的字段名称
+        },
+        dataWarp: (data) => {
+          data.list.forEach((item) => {
+            item.label = item.name;
+            item.value = item.id;
+            item.text = item.name;
+          });
+          window.CATEGORY = data.list;
+          return data;
+        },
+        chlidOptionsUrl: Config.host + '/api/admin/categories',
+        chlidOptionsFilter:(options,record)=> {
+          if(!!record.channel){
+            return options.filter((option,index)=>{
+              return option.channels.split(',').find((x)=>{
+                return x === record.channel;
+              });
+            });
+          }else{
+            return options;
+          }
+        }
+        ,
+        chlidOptions: [],
+        chlidOptionsType:{
+          text:'name',
+          value:'id'
+        },
+        render(text, record) {
+          return ((window.CATEGORY || []).find(x => x.id === text) || {}).name || "";
+        }
+      },
     ]
   }
 
@@ -138,12 +216,33 @@ class GuestbookComponent extends React.Component {
             loadDataUrl: Config.host + '/api/admin/messages/search',
             saveOrUpdateUrl: Config.host + '/api/admin/messages/deal',
           }}
+          actionItem={[
+            {'title':'excel导出',call:(record,instance)=>{
+              request({
+                type: 'get',
+                url: Config.host + '/api/admin/messages/export-url',
+                data: instance.getParams(),
+                success: (data)=> {
+                  if(!!data.result){
+                    window.location.href=Config.host + data.result;
+                  }
+
+                },
+                error: (data)=> {
+                  message.error("导出失败")
+                }
+              });
+
+
+            }}
+          ]}
           dataWarp={(result)=>{
             result.list.forEach((item)=>{
               item.productname = item['product'].name;
             });
             return result;
           }}
+          operaTitle="订单处理"
           searchType='open'
           pagination={true}
           showDefaultBtn={{

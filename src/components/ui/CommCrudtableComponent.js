@@ -289,7 +289,7 @@ class CommCrudtableComponent extends React.Component {
 
     if (operaItem.length != 0) {
       showColumns.push({
-        title: '操作',
+        title: this.props.operaTitle || '操作',
         key: 'opera',
         render: (text, record, index) => {
           const style = {

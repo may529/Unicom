@@ -53,9 +53,12 @@ class ModifyFormComponent extends React.Component {
           callback([new Error(item.validataMsgs.errorMsg)]);
         }
       } else {
-        if (item.validata && (value == undefined || value.toString().length == 0)) {
-          callback([new Error(item.validataMsgs.emptyMsg || '请输入' + item.title)]);
-          return;
+        console.log(item.validataEmpty);
+        if(item.validataEmpty !=  false){
+          if (item.validata && (value == undefined || value.toString().length == 0)) {
+            callback([new Error(item.validataMsgs.emptyMsg || '请输入' + item.title)]);
+            return;
+          }
         }
 
         if (!this.validata(item.validata, value)) {
@@ -165,24 +168,24 @@ class ModifyFormComponent extends React.Component {
                 this.setState({ refresh: true });
               },
               initialValue: item.defaultValue
-            })(<Input type='hidden' disabled={disabled} autoComplete='off' key={item.dataIndex} placeholder={item.title} />)
+            })(<Input type='hidden' disabled={disabled} autoComplete='off' key={item.dataIndex} placeholder={item.placeholder || item.title} />)
           );
           break;
         case 'text':
           input = (
-            <Input type='text' disabled={disabled} autoComplete='off' placeholder={item.title} />);
+            <Input type='text' disabled={disabled} autoComplete='off' placeholder={item.placeholder || item.title} />);
           break;
         case 'password':
           input = (
-            <Input type='password' disabled={disabled} autoComplete='off' placeholder={item.title} />);
+            <Input type='password' disabled={disabled} autoComplete='off' placeholder={item.placeholder || item.title} />);
           break;
         case 'number':
-          input = (<InputNumber disabled={disabled} autoComplete='off' placeholder={item.title} />);
+          input = (<InputNumber disabled={disabled} autoComplete='off' placeholder={item.placeholder || item.title} />);
           break;
         case 'email':
           input = (
             <Input type='email' disabled={disabled} autoComplete='off'
-              placeholder={item.title} />);
+                   placeholder={item.placeholder || item.title} />);
           break;
         case 'date':
           input = (<DatePicker disabled={disabled} format={item.format} />);
@@ -200,7 +203,8 @@ class ModifyFormComponent extends React.Component {
           input = (<Radio.Group disabled={disabled}>{radio}</Radio.Group>);
           break;
         case 'select':
-          let option = ((item.chlidOptions || []).map((option) => {
+          let option = ((
+            item.chlidOptionsFilter?item.chlidOptionsFilter(item.chlidOptions,values || this.props.instance.state.modifyRow):(item.chlidOptions || [])).map((option) => {
             return (<Select.Option key={option.value} value={option.value}>{option.text}</Select.Option>)
           }));
           input = (<Select disabled={disabled}>{option}</Select>);
@@ -216,7 +220,7 @@ class ModifyFormComponent extends React.Component {
           break;
         case 'textarea':
           input = (
-            <Input type='textarea' autoComplete='off' disabled={disabled} autosize={{ minRows: 6 }} placeholder={item.title} />);
+            <Input type='textarea' autoComplete='off' disabled={disabled} autosize={{ minRows: 6 }} placeholder={item.placeholder || item.title} />);
           break;
         case 'richtext':
           input = (<RichTextEditor item={item} height='200' form={this.props.form} disabled={disabled} />);
@@ -237,7 +241,7 @@ class ModifyFormComponent extends React.Component {
         tips = item.tips(values);
       }
       return (
-        <Form.Item {...formItemLayout} label={item.title + ':'} key={item.dataIndex} hasFeedback={!!item.validata}>
+        <Form.Item {...formItemLayout} label={item.title } key={item.dataIndex} hasFeedback={!!item.validata}>
           {
             getFieldDecorator(item.dataIndex, {
               rules: [
