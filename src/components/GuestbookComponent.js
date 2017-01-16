@@ -155,11 +155,11 @@ class GuestbookComponent extends React.Component {
           text: '滴滴'
         },{
           key: '3',
-          value: '其他1',
+          value: 'other1',
           text: '其他1'
         },{
           key: '4',
-          value: '其他2',
+          value: 'other2',
           text: '其他2'
         }]
       },
