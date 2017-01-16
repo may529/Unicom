@@ -67,10 +67,6 @@ class SpeProductComponent extends React.Component {
           value: 'didi',
           text: '滴滴'
         }],
-        validata: /\S/,
-        validataMsgs: {
-          emptyMsg: '请选择渠道和对应产品',
-        },
         render(text, reocrd) {
           text = reocrd['product'].channel;
           return (
@@ -87,6 +83,10 @@ class SpeProductComponent extends React.Component {
         dataType: 'cascader',
         showable: false,
         editable: true,
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请选择渠道和对应产品',
+        },
         chlidOptionsType: ['channel', 'productId'],
         dataWarp: (data) => {
           let list = data.list || [];
