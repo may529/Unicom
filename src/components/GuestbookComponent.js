@@ -108,7 +108,11 @@ class GuestbookComponent extends React.Component {
         title: '处理信息',
         dataType: 'textarea',
         showable: false,
-        editable: true
+        editable: true,
+        validata: /(\s)|(.{3,})/,
+        validataMsgs: {
+          errorMsg: '请填写处理意见，不得少于3个字',
+        }
       },
       {
         dataIndex: 'status',
