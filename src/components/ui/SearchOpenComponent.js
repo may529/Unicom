@@ -98,7 +98,7 @@ class SearchOpenComponent extends React.Component {
           }}/>);
           break;
         case 'select':
-          searcher = (item.chlidOptionsFilter?item.chlidOptionsFilter(item.chlidOptions,this.state.params):item.chlidOptions).map((option) => {
+          searcher = (item.chlidOptionsFilter?item.chlidOptionsFilter(item.chlidOptions,this.state.params):(item.chlidOptions || [])).map((option) => {
             return (
               <Button
                 className="item"

@@ -17,6 +17,8 @@ import Productlist from './components/ProductlistComponent';
 import SpeProduct from './components/SpeProductComponent';
 import Guestbook from './components/GuestbookComponent';
 import Statistics from './components/StatisticsComponent';
+import Recommend from './components/RecommendComponent';
+import Rule from './components/RuleComponent'
 import AdManger from './components/AdMangerComponent';
 import SS from 'parsec-ss';
 
@@ -43,6 +45,10 @@ class App extends React.Component {
           <Router path='/productlist' breadcrumbName='产品管理' component={Productlist} />
           <Router path='/speproduct' breadcrumbName='首页推荐' component={SpeProduct} />
           <Router path='/guestbook' breadcrumbName='订单管理' component={Guestbook} />
+          <Router path='/recommend-polite' breadcrumbName='推荐有礼'>
+            <Router path='/rule' breadcrumbName='活动规则' component={Rule}/>
+            <Router path='/recommend' breadcrumbName='推荐列表' component={Recommend}/>
+          </Router>
           <Router path='/statistics' breadcrumbName='数据统计' component={Statistics} />
           {/*<Router path='/ad' breadcrumbName='广告管理' component={AdManger} />*/}
         </Route>

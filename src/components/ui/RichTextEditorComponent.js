@@ -68,7 +68,7 @@ class RichTextEditorComponent extends React.Component {
     // }
   }
   componentWillReceiveProps() {
-    this.initContent();
+    // this.initContent();
   }
   componentDidMount() {
     let editor = new wangEditor(this.state.id);
