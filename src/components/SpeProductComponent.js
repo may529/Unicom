@@ -68,7 +68,7 @@ class SpeProductComponent extends React.Component {
           text: '滴滴'
         }],
         render(text, reocrd) {
-          text = reocrd['product'].channel=='didi'?'嘀嘀':reocrd['product'].channel;
+          text = reocrd['product'].channel=='didi'?'滴滴':reocrd['product'].channel;
           return (
             <Col style={{ width: 50 }}>
               {text}
