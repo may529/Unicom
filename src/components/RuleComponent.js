@@ -12,30 +12,28 @@ class RuleComponent extends React.Component {
   constructor(props){
     super(props);
     this.state={
-         content:{}
+      content:{}
     }
   }
   componentDidMount(){
-    this.props.form.setFieldsValue({content:this.state.content})
+    this.loadData();
   }
   componentWillMount() {
-    this.loadData();
+
   }
   loadData() {
     request({
       type: 'get',
       url: Config.host + '/api/admin/display/recommendation',
       success: (e) => {
-        this.setState({
-          content: e.result.content
-        });
+        this.props.form.setFieldsValue({content:e.result})
       },
       error: (data) => {
 
       }
     });
   }
-    render() {
+  render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="rule-component">
@@ -46,13 +44,16 @@ class RuleComponent extends React.Component {
           }} form ={this.props.form} ></RichTextEditor>)}
         </Form>
         <Button onClick={()=>{
-          if(!this.props.form.getFieldsValue()){
+          let values = this.props.form.getFieldsValue();
+          console.log(values);
+          return;
+          if(!values){
             message.error("请编辑活动规则！")
           }else{
             request({
               type: 'post',
               url: Config.host + '/api/admin/display/recommendation',
-              content:this.state.content,
+              data:this.state.content,
               success: (e) => {
                 message.success("保存成功")
               },

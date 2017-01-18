@@ -37,6 +37,9 @@ class RichTextEditorComponent extends React.Component {
     $(document).off('click', this.handleClick);
   }
   initContent() {
+    if(!this.state.editor){
+      return;
+    }
     let editor = this.state.editor;
     let values = this.props.form.getFieldsValue();
     if (!!this.props.form) {
@@ -68,7 +71,7 @@ class RichTextEditorComponent extends React.Component {
     // }
   }
   componentWillReceiveProps() {
-    // this.initContent();
+    this.initContent();
   }
   componentDidMount() {
     let editor = new wangEditor(this.state.id);
