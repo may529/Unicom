@@ -45,15 +45,13 @@ class RuleComponent extends React.Component {
         </Form>
         <Button onClick={()=>{
           let values = this.props.form.getFieldsValue();
-          console.log(values);
-          return;
           if(!values){
             message.error("请编辑活动规则！")
           }else{
             request({
               type: 'post',
               url: Config.host + '/api/admin/display/recommendation',
-              data:this.state.content,
+              data:values,
               success: (e) => {
                 message.success("保存成功")
               },
