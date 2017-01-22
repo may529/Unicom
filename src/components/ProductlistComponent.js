@@ -203,6 +203,11 @@ class ProductlistComponent extends React.Component {
         editable: (record)=>{
           return record.categoryId !=1 && record.categoryId !=2 && record.categoryId !=3 && record.categoryId !=4 && record.categoryId !=5 && record.categoryId !=6;
         },
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请填写详情',
+        }
+
       }, {
         dataIndex: 'spec',
         title: '规格',
@@ -234,7 +239,8 @@ class ProductlistComponent extends React.Component {
         },
       },{
         dataIndex: 'content',
-        title: '产品简介',
+        title: <span><span className="dot">*</span>产品简介 </span>,
+        placeholder:'产品简介',
         dataType: 'richtext',
         showable: false,
         editable: (record)=>{
@@ -262,6 +268,10 @@ class ProductlistComponent extends React.Component {
         editable: (record)=>{
           return record.categoryId ===4 ;
         },
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请填写产品简介',
+        }
       }, {
         dataIndex: 'spec',
         title: '参数',
@@ -279,6 +289,10 @@ class ProductlistComponent extends React.Component {
         editable: (record)=>{
           return record.categoryId ===3 ;
         },
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请填写号码明细',
+        }
       }, {
         dataIndex: 'spec',
         title: '办理流程',
