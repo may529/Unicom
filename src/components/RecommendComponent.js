@@ -178,6 +178,10 @@ class RecommendComponent extends React.Component {
         title: <span><span className="dot">*</span>是否发放奖品</span>,
         placeholder:'是否发放奖品',
         dataType: 'radio',
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请选择是否发放奖品',
+        },
         showable: true,
         editable: true,
         chlidOptions: [{
@@ -237,10 +241,15 @@ class RecommendComponent extends React.Component {
       },
       {
         dataIndex: 'remark',
-        title: '处理备注',
+        title: <span><span className="dot">*</span>处理备注</span>,
+        placeholder:'处理备注',
         dataType: 'textarea',
         showable: false,
         editable: true,
+        validata: /\S/,
+        validataMsgs: {
+          emptyMsg: '请填写备注',
+        }
       }
     ]
   }
