@@ -144,7 +144,7 @@ class ModifyFormComponent extends React.Component {
       if (!!values && values.id != null && values.id != undefined) {
         if (typeof item.disabled == 'function') {
           // debugger;
-          disabled = item.disabled(values);
+          disabled = item.disabled(values,this.props.form);
         } else {
           disabled = !!item.disabled;
         }

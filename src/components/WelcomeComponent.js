@@ -16,10 +16,9 @@ class WelcomeComponent extends React.Component {
           <Col span={4}></Col>
         </Row>
         <Row className="ewm">
-          <Col span={4}></Col>
-          <Col span={8}><img src="images/uber.png" alt=""/><p>扫描访问uber主页面</p></Col>
-          <Col span={8}><img src="images/didi.png" alt=""/><p>扫描访问滴滴主页面</p></Col>
-          <Col span={4}></Col>
+          <Col span={8}><img src="images/uber_cq.png" alt=""/><p>扫描访问uber cq主页面</p></Col>
+          <Col span={8}><img src="images/didi_yl.png" alt=""/><p>扫描访问滴滴(运力)主页面</p></Col>
+          <Col span={8}><img src="images/didi_jlb.png" alt=""/><p>扫描访问滴滴(俱乐部)主页面</p></Col>
         </Row>
       </div>
     );

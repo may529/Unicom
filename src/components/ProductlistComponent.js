@@ -16,8 +16,27 @@ class ProductlistComponent extends React.Component {
 
     }
   }
+  componentWillMount(){
+    this.loadData();
+  }
+  loadData(){
+    request({
+      type: 'get',
+      url: Config.host + '/api/admin/channels',
+      success: (e) => {
+        let channels = {};
+        e.result.list.forEach(function (item) {
+          channels[item.code] = item.name;
+        });
+        this.setState({channels:channels});
+      },
+      error: (data) => {
 
+      }
+    });
+  }
   getColums() {
+    let _that =this;
     return [
       {
         dataIndex: 'id',
@@ -94,7 +113,7 @@ class ProductlistComponent extends React.Component {
           name: 'channel' //查询的字段名称
         },
         render(text, record) {
-          return record.channel=="didi"?"滴滴":record.channel
+          return _that.state.channels[record.channel];
         },
         chlidOptionsUrl:Config.host +'/api/admin/channels',
         chlidOptionsType:{

@@ -4,6 +4,7 @@ import React from 'react';
 import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, Modal, Alert,message } from 'antd';
 import CommCrudtable from './ui/CommCrudtableComponent';
 import Config from 'config';
+import moment from 'moment';
 import request from '../Request';
 
 require('styles//Recommend.less');
@@ -68,12 +69,12 @@ class RecommendComponent extends React.Component {
         title: '被推荐人电话',
         dataType: 'text',
         editable: true,
-        showable: false,
+        showable: true,
         disabled:true
       },
       {
         dataIndex: 'receiverName',
-        title: '获奖人',
+        title: '佣金发放人',
         dataType: 'text',
         editable: true,
         showable: false,
@@ -81,7 +82,7 @@ class RecommendComponent extends React.Component {
       },
       {
         dataIndex: 'receiverPhone',
-        title: '获奖人电话',
+        title: '佣金发放人电话',
         dataType: 'text',
         editable: true,
         showable: false,
@@ -89,7 +90,7 @@ class RecommendComponent extends React.Component {
       },
       {
         dataIndex: 'receiverWeChat',
-        title: '获奖人微信',
+        title: '佣金发放人微信',
         dataType: 'text',
         editable: true,
         showable: false,
@@ -101,17 +102,10 @@ class RecommendComponent extends React.Component {
         showable: true,
         editable: true,
         disabled:true,
-        dataType: 'text',
-        format: 'yyyy-MM-dd HH:mm:ss',
+        dataType: 'date',
+        format: 'YYYY-MM-DD HH:mm:ss',
         render(text, reocrd) {
-          text = new Date(reocrd['createdAt']);
-          let Y = text.getFullYear() + '-';
-          let M = (text.getMonth()+1 < 10 ? '0'+(text.getMonth()+1) : text.getMonth()+1) + '-';
-          let D = text.getDate() + ' ';
-          let h = text.getHours() + ':';
-          let m = text.getMinutes() + ':';
-          let s = text.getSeconds();
-          return Y+M+D+h+m+s;
+          return text.format("YYYY-MM-DD HH:mm:ss");
         }
       },
       {
@@ -123,20 +117,13 @@ class RecommendComponent extends React.Component {
         dataType: 'text',
         format: 'yyyy-MM-dd HH:mm:ss',
         render(text, reocrd) {
-          text = new Date(reocrd['dealTime']);
-          let Y = text.getFullYear() + '-';
-          let M = (text.getMonth()+1 < 10 ? '0'+(text.getMonth()+1) : text.getMonth()+1) + '-';
-          let D = text.getDate() + ' ';
-          let h = text.getHours() + ':';
-          let m = text.getMinutes() + ':';
-          let s = text.getSeconds();
-          return Y+M+D+h+m+s;
+          return text.format("YYYY-MM-DD hh:mm:ss");
         }
       },
       {
         dataIndex: 'dealType',
-        title: <span><span className="dot">*</span>处理类型</span>,
-        placeholder:'处理类型',
+        title: <span><span className="dot">*</span>处理情况</span>,
+        placeholder:'处理情况',
         dataType: 'select',
         editable: true, //是否可以编辑
         searchable: { //是否显示在右侧的搜索区域
@@ -175,9 +162,16 @@ class RecommendComponent extends React.Component {
         }
       },{
         dataIndex: 'isPay',
-        title: <span><span className="dot">*</span>是否发放奖品</span>,
+        title: <span><span className="dot">*</span>佣金是否发放</span>,
         placeholder:'是否发放奖品',
         dataType: 'radio',
+        disabled:function (record,form) {
+          if(record.dealType != 'done' && record.isPay != false){
+            record.isPay = false;
+            form.setFieldsValue(record);
+          }
+          return record.dealType!="done";
+        },
         validata: /\S/,
         validataMsgs: {
           emptyMsg: '请选择是否发放奖品',
@@ -261,6 +255,12 @@ class RecommendComponent extends React.Component {
           operaUrl={{
             loadDataUrl: Config.host + '/api/admin/recommendations/search',
             saveOrUpdateUrl: Config.host + '/api/admin/recommendations/deal',
+          }}
+          dataWarp = {(result)=>{
+            result.list.forEach((item)=>{
+              item.createdAt = moment(item.createdAt);
+            });
+            return result;
           }}
           actionItem={[
             {'title':'excel导出',call:(record,instance)=>{
