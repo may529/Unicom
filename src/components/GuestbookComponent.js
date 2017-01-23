@@ -149,23 +149,11 @@ class GuestbookComponent extends React.Component {
           isDispaly: true,
           name: 'channel' //查询的字段名称
         },
-        chlidOptions: [{
-          key: '1',
-          value: 'uber',
-          text: 'uber'
-        }, {
-          key: '2',
-          value: 'didi',
-          text: '滴滴'
-        },{
-          key: '3',
-          value: 'other1',
-          text: '其他1'
-        },{
-          key: '4',
-          value: 'other2',
-          text: '其他2'
-        }]
+        chlidOptionsUrl:Config.host +'/api/admin/channels',
+        chlidOptionsType:{
+          text:'name',
+          value:'id'
+        },
       },
       {
         dataIndex: 'categoryId',
