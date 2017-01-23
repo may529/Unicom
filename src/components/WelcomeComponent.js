@@ -15,6 +15,12 @@ class WelcomeComponent extends React.Component {
           <Col span={8}><img src="images/didi.png" alt=""/><p>扫描访问滴滴主页面</p></Col>
           <Col span={4}></Col>
         </Row>
+        <Row className="ewm">
+          <Col span={4}></Col>
+          <Col span={8}><img src="images/uber.png" alt=""/><p>扫描访问uber主页面</p></Col>
+          <Col span={8}><img src="images/didi.png" alt=""/><p>扫描访问滴滴主页面</p></Col>
+          <Col span={4}></Col>
+        </Row>
       </div>
     );
   }

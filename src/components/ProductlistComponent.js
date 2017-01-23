@@ -96,23 +96,11 @@ class ProductlistComponent extends React.Component {
         render(text, record) {
           return record.channel=="didi"?"滴滴":record.channel
         },
-        chlidOptions: [{
-          key: '1',
-          value: 'uber',
-          text: 'uber'
-        }, {
-          key: '2',
-          value: 'didi',
-          text: '滴滴'
-        },{
-          key: '3',
-          value: 'other1',
-          text: '其他1'
-        },{
-          key: '4',
-          value: 'other2',
-          text: '其他2'
-        }],
+        chlidOptionsUrl:Config.host +'/api/admin/channels',
+        chlidOptionsType:{
+          text:'name',
+          value:'id'
+        },
         validata: /\S/,
         validataMsgs: {
           emptyMsg: '请选择渠道来源',
