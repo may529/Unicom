@@ -248,7 +248,6 @@ class GuestbookComponent extends React.Component {
           }}
           operaTitle="订单处理"
           searchType='open'
-          pagination={true}
           showDefaultBtn={{
             showAddBtn: false,
             showEditBtn: true,

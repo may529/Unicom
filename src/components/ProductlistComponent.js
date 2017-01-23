@@ -330,7 +330,6 @@ class ProductlistComponent extends React.Component {
             return obj;
           }}
           searchType='open'
-          pagination={true}
           showDefaultBtn={{
             showAddBtn: true,
             showEditBtn: true,

@@ -112,7 +112,7 @@ class CommCrudtableComponent extends React.Component {
       }
 
       let pagination = this.state.pagination;
-      pagination.total = (result.total || data.count || data.total || result.total || result.totalPages * pagination.pageSize);
+      pagination.total = result.pageTotal * params.pageSize;
       let lst = (result.list || result.lst || result.array);
       lst.forEach((item) => {
         item.key = item.id;

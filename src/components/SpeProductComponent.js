@@ -12,11 +12,31 @@ class SpeProductComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      channels:null,
     }
 
   }
+  componentWillMount(){
+    this.loadData();
+  }
+  loadData(){
+    request({
+      type: 'get',
+      url: Config.host + '/api/admin/channels',
+      success: (e) => {
+        let channels = {};
+        e.result.list.forEach(function (item) {
+          channels[item.code] = item.name;
+        });
+        this.setState({channels:channels});
+      },
+      error: (data) => {
+
+      }
+    });
+  }
   getColums() {
+    let _that =this;
     return [
       {
         dataIndex: 'id',
@@ -58,17 +78,14 @@ class SpeProductComponent extends React.Component {
           isDispaly: true,
           name: 'channel' //查询的字段名称
         },
-        chlidOptions: [{
-          key: '1',
-          value: 'uber',
-          text: 'uber'
-        }, {
-          key: '2',
-          value: 'didi',
-          text: '滴滴'
-        }],
+        chlidOptionsUrl: Config.host + '/api/admin/channels',
+        chlidOptions: [],
+        chlidOptionsType:{
+          text:'name',
+          value:'id'
+        },
         render(text, reocrd) {
-          text = reocrd['product'].channel=='didi'?'滴滴':reocrd['product'].channel;
+          text = _that.state.channels[reocrd['product'].channel];
           return (
             <Col style={{ width: 50 }}>
               {text}
@@ -90,33 +107,49 @@ class SpeProductComponent extends React.Component {
         chlidOptionsType: ['channel', 'productId'],
         dataWarp: (data) => {
           let list = data.list || [];
-          let didi = [];
-          let uber = [];
+          let obj = {};
           list.forEach((item) => {
-            item.label = item.name;
-            item.value = item.id;
-            if (item.channel == 'didi') {
-              didi.push(item);
-            } else if (item.channel == 'uber') {
-              uber.push(item);
+            var temp = {};
+            if(obj[item.channel]){
+              temp = obj[item.channel];
+            }else{
+              obj[item.channel] = {};
             }
+            temp["value"] = item.channel;
+            temp["label"] = this.state.channels[item.channel];
+            var c_temp = {label:item.name,value:item.id};
+            if(!temp["children"]){
+              temp["children"] = [];
+            }
+
+            temp["children"].push(c_temp);
+            obj[item.channel] = temp;
+
           });
+
           data.list = [];
-          if(didi.length >0){
-            data.list.push({
-              value: 'didi',
-              label: '滴滴',
-              children: didi,
-            });
-          }
-          if(uber.length >0){
-            data.list.push({
-              value: 'uber',
-              label: 'Uber',
-              children: uber,
-            });
+
+          for(var key in obj){
+            data.list.push(obj[key]);
           }
           return data;
+
+          // data.list = [];
+          // if(didi.length >0){
+          //   data.list.push({
+          //     value: 'didi',
+          //     label: '滴滴',
+          //     children: didi,
+          //   });
+          // }
+          // if(uber.length >0){
+          //   data.list.push({
+          //     value: 'uber',
+          //     label: 'Uber',
+          //     children: uber,
+          //   });
+          // }
+          // return data;
         },
         chlidOptionsUrl: Config.host + '/api/admin/products/search',
       },
@@ -138,6 +171,7 @@ class SpeProductComponent extends React.Component {
   render() {
     return (
       <div className="speproduct-component">
+        {!!this.state.channels &&
         <CommCrudtable
           columns={this.getColums()}
           operaUrl={{
@@ -160,13 +194,13 @@ class SpeProductComponent extends React.Component {
             return obj;
           } }
           searchType='open'
-          pagination={true}
           showDefaultBtn={{
             showAddBtn: true,
             showEditBtn: true,
             showDeleteBtn: true
           }}
           />
+        }
       </div>
     );
   }

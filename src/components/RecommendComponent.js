@@ -284,7 +284,6 @@ class RecommendComponent extends React.Component {
           ]}
           operaTitle="推荐处理"
           searchType='open'
-          pagination={true}
           showDefaultBtn={{
             showAddBtn: false,
             showEditBtn: true,
