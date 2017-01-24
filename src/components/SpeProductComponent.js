@@ -109,7 +109,7 @@ class SpeProductComponent extends React.Component {
           let list = data.list || [];
           let obj = {};
           list.forEach((item) => {
-            var temp = {};
+            let temp = {};
             if(obj[item.channel]){
               temp = obj[item.channel];
             }else{
@@ -117,7 +117,7 @@ class SpeProductComponent extends React.Component {
             }
             temp["value"] = item.channel;
             temp["label"] = this.state.channels[item.channel];
-            var c_temp = {label:item.name,value:item.id};
+            let c_temp = {label:item.name,value:item.id};
             if(!temp["children"]){
               temp["children"] = [];
             }
@@ -151,7 +151,7 @@ class SpeProductComponent extends React.Component {
           // }
           // return data;
         },
-        chlidOptionsUrl: Config.host + '/api/admin/products/search',
+        chlidOptionsUrl: Config.host + '/api/admin/products/search?pageSize=99999',
       },
       {
         dataIndex: 'desc',
