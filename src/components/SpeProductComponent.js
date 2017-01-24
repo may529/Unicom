@@ -82,7 +82,7 @@ class SpeProductComponent extends React.Component {
         chlidOptions: [],
         chlidOptionsType:{
           text:'name',
-          value:'id'
+          value:'code'
         },
         render(text, reocrd) {
           text = _that.state.channels[reocrd['product'].channel];

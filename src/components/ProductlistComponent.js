@@ -118,7 +118,7 @@ class ProductlistComponent extends React.Component {
         chlidOptionsUrl:Config.host +'/api/admin/channels',
         chlidOptionsType:{
           text:'name',
-          value:'id'
+          value:'code'
         },
         validata: /\S/,
         validataMsgs: {
