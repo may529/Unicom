@@ -91,8 +91,7 @@ class LoginComponent extends React.Component {
       },
       success: (data)=> {
         SS.set(Config.token, data.result.token);
-        SS.set(Config.userId, data.result.userId);
-        SS.set(Config.roleType, data.result.roleType);
+        SS.setObj(Config.user, data.result.user);
         SS.remove('expireTime');
         window.location.href = '#/?';
       },

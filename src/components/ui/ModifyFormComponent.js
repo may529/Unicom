@@ -53,7 +53,7 @@ class ModifyFormComponent extends React.Component {
           callback([new Error(item.validataMsgs.errorMsg)]);
         }
       } else {
-        console.log(item.validataEmpty);
+        //console.log(item.validataEmpty);
         if(item.validataEmpty !=  false){
           if (item.validata && (value == undefined || value.toString().length == 0)) {
             callback([new Error(item.validataMsgs.emptyMsg || '请输入' + item.title)]);

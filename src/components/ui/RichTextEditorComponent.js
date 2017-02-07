@@ -96,7 +96,7 @@ class RichTextEditorComponent extends React.Component {
       elem_btnId.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        console.log($(`#${this.state.id} [type=file]`));
+        //console.log($(`#${this.state.id} [type=file]`));
         $(`#${this.state.id}`).closest('.richtexteditor-component').find('[type=file]').click();
         console.log(e);
       })

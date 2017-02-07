@@ -5,6 +5,8 @@ import { Row, Col, Badge, Tabs, Spin, Button, Table, Tag, Icon, Card, Popover, M
 import CommCrudtable from './ui/CommCrudtableComponent';
 import Config from 'config';
 import request from '../Request';
+import _ from 'lodash';
+import SS from "parsec-ss";
 
 require('styles//Guestbook.less');
 
@@ -12,7 +14,7 @@ class GuestbookComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+        user:SS.getObj(Config.user)
     }
   }
   getColums() {
@@ -147,6 +149,8 @@ class GuestbookComponent extends React.Component {
         showable: false,
         searchable: { //是否显示在右侧的搜索区域
           isDispaly: true,
+          clearable:false,
+          defaultValue:_.get(this.state.user,"channels[0]"),
           name: 'channel' //查询的字段名称
         },
         chlidOptionsUrl:Config.host +'/api/admin/channels',
@@ -154,6 +158,12 @@ class GuestbookComponent extends React.Component {
           text:'name',
           value:'code'
         },
+        chlidOptionsFilter:(options,record)=>{
+          if(!this.state.user.channels){return options || []};
+          return (options||[]).filter((option)=>{
+            return !!this.state.user.channels.find(x=>x === option.value);
+          });
+        }
       },
       {
         dataIndex: 'categoryId',

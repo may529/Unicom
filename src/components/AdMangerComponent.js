@@ -71,7 +71,7 @@ class AdMangerComponent extends React.Component {
             return result;
           } }
           dataFormat={(obj)=>{
-            console.log(obj);
+            //console.log(obj);
             obj['img'] = obj['img'].substring(Config.host.length);
             return obj;
           }}

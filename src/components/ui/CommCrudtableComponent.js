@@ -98,7 +98,7 @@ class CommCrudtableComponent extends React.Component {
     });
 
     function onLoadData(data) {
-      console.log(data);
+      // console.log(data);
       if (data.code !== 0) {
         message.error(data.message);
         return;

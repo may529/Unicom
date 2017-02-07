@@ -4,8 +4,9 @@ require('styles//MenuBar.less');
 import React from 'react';
 import SS from 'parsec-ss';
 import Config from 'config';
-import { Menu, Icon, Row, Spin, Button } from 'antd';
-import { Link } from 'react-router';
+import {Menu, Icon, Row, Spin, Button} from 'antd';
+import {Link} from 'react-router';
+import _ from "lodash";
 //import request from '../Request';
 
 let menu_key = SS.get('menu_key') == null ? '0' : SS.get('menu_key');
@@ -36,7 +37,7 @@ class MenuBarComponent extends React.Component {
   matchPath(path, prefix, parent) {
     parent.map((item) => {
       if (item.url == path) {
-        this.setState({ current: '' + item.id });
+        this.setState({current: '' + item.id});
         return;
       }
       if (item.children) {
@@ -87,20 +88,30 @@ class MenuBarComponent extends React.Component {
     // });
     let menus = {
       'lst': [
-        { 'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist' },
-        { 'urlName': '首页推荐', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct' },
+        {'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/'},
+        {roles: ["admin"], 'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist'},
+        {roles: ["admin"], 'urlName': '首页推荐', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct'},
         // { 'urlName': '广告管理', 'icon': '&#xe603;', 'id': 4, 'url': '/ad' },
-        { 'urlName': '订单管理', 'icon': '&#xe603;', 'id': 5, 'url': '/guestbook' },
-        {'urlName':'推荐有礼','icon':'&#xe616;','id':6,
-                'children':[{ 'urlName': '活动规则', 'icon': '', 'id': 6.1, 'url': '/rule' },
-                  { 'urlName': '推荐列表', 'icon': '', 'id': 6.2, 'url': '/recommend' }],'url':''},
-        { 'urlName': '数据统计', 'icon': '&#xe615;', 'id': 7, 'url': '/statistics'},
+        {roles: ["admin","order_viewer"], 'urlName': '订单管理', 'icon': '&#xe603;', 'id': 5, 'url': '/guestbook'},
+        {
+          roles: ["admin"], 'urlName': '推荐有礼', 'icon': '&#xe616;', 'id': 6,
+          'children': [{'urlName': '活动规则', 'icon': '', 'id': 6.1, 'url': '/rule'},
+            {'urlName': '推荐列表', 'icon': '', 'id': 6.2, 'url': '/recommend'}], 'url': ''
+        },
+        {roles: ["admin"], 'urlName': '工号管理', 'icon': '&#xe6cd;', 'id': 7, 'url': '/employee'},
+        {roles: ["admin"], 'urlName': '数据统计', 'icon': '&#xe615;', 'id': 8, 'url': '/statistics'},
       ],
       'status': 0
     };
-    menus.lst.unshift({ 'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/' });
+
+    let u=SS.getObj(Config.user);
+
+    let list=_.chain(menus.lst)
+      .filter(m=>m.roles==null||!_.isEmpty(_.intersection(m.roles,u.roles)))
+      .value();
+
     this.setState({
-      menu: this.sortMenu(menus.lst)
+      menu: this.sortMenu(list)
     }, () => {
       this.matchPath(this.props.location.pathname, '', this.state.menu || []);
     });
@@ -123,7 +134,7 @@ class MenuBarComponent extends React.Component {
 
   handleToogle() {
     this.props.onToggle(!this.state.isOpen);
-    this.setState({ isOpen: !this.state.isOpen });
+    this.setState({isOpen: !this.state.isOpen});
   }
 
   render() {
@@ -137,15 +148,15 @@ class MenuBarComponent extends React.Component {
         var chiildren = item.children.map(function (child, childIndex) {
           return (
             <Menu.Item key={'' + child.id}><Link to={child.url}><i className="iconfont"
-              dangerouslySetInnerHTML={{ __html: child.icon }}></i><span >{child.urlName}</span></Link></Menu.Item>
+                                                                   dangerouslySetInnerHTML={{__html: child.icon}}></i><span >{child.urlName}</span></Link></Menu.Item>
           );
         });
         return (
           <Menu.SubMenu key={'' + item.id} title={
             <span onClick={() => {
               //              console.log(item);
-              this.setState({ current: '' + item.id });
-            } }><i className="iconfont" dangerouslySetInnerHTML={{ __html: item.icon }}></i><span
+              this.setState({current: '' + item.id});
+            } }><i className="iconfont" dangerouslySetInnerHTML={{__html: item.icon}}></i><span
               style={linkStyle}>{item.urlName}</span></span>}>
             {chiildren}
           </Menu.SubMenu>
@@ -153,8 +164,8 @@ class MenuBarComponent extends React.Component {
       } else {
         return (
           <Menu.Item key={'' + item.id}><Link to={item.url}><i className="iconfont"
-            dangerouslySetInnerHTML={{ __html: item.icon }}></i><span
-              style={linkStyle}>{item.urlName}</span></Link></Menu.Item>
+                                                               dangerouslySetInnerHTML={{__html: item.icon}}></i><span
+            style={linkStyle}>{item.urlName}</span></Link></Menu.Item>
         );
       }
     });
@@ -162,13 +173,13 @@ class MenuBarComponent extends React.Component {
       <Spin spinning={menuItem.length == 0}>
         <Row className='menubar-component'>
           <Row className='controller'>
-            <Button onClick={this.handleToogle.bind(this)}>{this.state.isOpen ? <Icon type="double-left" /> :
-              <Icon type="double-right" />}</Button>
+            <Button onClick={this.handleToogle.bind(this)}>{this.state.isOpen ? <Icon type="double-left"/> :
+              <Icon type="double-right"/>}</Button>
           </Row>
           <Row className='menu'>
             <Menu selectedKeys={[this.state.current]}
-              style={{ width: this.state.isOpen ? 240 : 70 }}
-              mode={this.state.isOpen ? 'inline' : 'vertical'}>
+                  style={{width: this.state.isOpen ? 240 : 70}}
+                  mode={this.state.isOpen ? 'inline' : 'vertical'}>
               {menuItem}
             </Menu>
           </Row>

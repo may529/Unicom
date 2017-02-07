@@ -107,6 +107,9 @@ class SearchOpenComponent extends React.Component {
                 onClick={() => {
                   let param = {};
                   if (this.state.params[item.searchable.name] === option.value) {
+                    if(item.searchable.clearable === false){
+                      return;
+                    }
                     param[item.searchable.name] = null;
                   } else {
                     param[item.searchable.name] = option.value;

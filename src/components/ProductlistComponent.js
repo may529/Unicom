@@ -341,7 +341,7 @@ class ProductlistComponent extends React.Component {
             return result;
           } }
           dataFormat={(obj)=>{
-            console.log(obj);
+            //console.log(obj);
             obj['icon'] = obj['icon'].substring(Config.host.length);
             obj['pics'] = obj['pics'].map((pic)=>{
               return pic.substring(Config.host.length);

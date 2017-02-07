@@ -81,7 +81,7 @@ class NavBarComponent extends React.Component {
   }
 
   handleFormChange(props, fields) {
-    Console.log(props, fields);
+    //Console.log(props, fields);
   }
 
   loadData() {
@@ -130,7 +130,7 @@ class NavBarComponent extends React.Component {
             email: email
           },
           success: (data)=> {
-            console.log(data);
+            //console.log(data);
             Modal.success({
               title: '邮件发送成功',
               content: '激活链接已发送至你的邮箱，请点击邮件中的链接进行邮箱绑定。',

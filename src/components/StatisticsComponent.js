@@ -112,7 +112,7 @@ class StatisticsComponent extends React.Component {
   }
   loadData(params){//获得统计数据
     this.setState({loading:true,sumPV:0});
-    console.log(params);
+    //console.log(params);
     request({
       type:'get',
       url:Config.host+'/api/admin/analytics/leancloud/appmetrics',
