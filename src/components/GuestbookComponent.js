@@ -16,6 +16,7 @@ class GuestbookComponent extends React.Component {
     this.state = {
         user:SS.getObj(Config.user)
     }
+
   }
   getColums() {
     return [
@@ -210,6 +211,7 @@ class GuestbookComponent extends React.Component {
 
 
   render() {
+    let _this = this;
     return (
       <div className="guestbook-component">
         <CommCrudtable
@@ -248,7 +250,7 @@ class GuestbookComponent extends React.Component {
           searchType='open'
           showDefaultBtn={{
             showAddBtn: false,
-            showEditBtn: true,
+            showEditBtn: (!_this.state.user.channels),
             showDeleteBtn: false,
             showSelection:false,
           }}

@@ -4,7 +4,8 @@ import React from 'react';
 import NavBar from './NavBarComponent';
 import MenuBar from './MenuBarComponent';
 import {Row, Col, Breadcrumb} from 'antd';
-
+import Config from 'config';
+import SS from 'parsec-ss';
 
 class AppComponent extends React.Component {
   constructor(props) {
@@ -22,6 +23,11 @@ class AppComponent extends React.Component {
   }
 
   render() {
+    let u = SS.getObj(Config.user);
+    let routes = JSON.parse(JSON.stringify(this.props.routes));
+    if(u.roles&&u.roles[0]=="order_viewer"&&u.channels){
+      routes.splice(0,1);
+    }
     return (
       <Row className='container'>
         <Row className='top'>
@@ -30,7 +36,7 @@ class AppComponent extends React.Component {
         <Row className={this.state.isOpen ? 'main open' : 'main'}>
           <Col className='right'>
             <Row className="breadcrumb">
-              <Breadcrumb separator=">" {...this.props}/>
+              <Breadcrumb separator=">" {...this.props} routes={routes}/>
             </Row>
             <Row className="content">
               {this.props.children}

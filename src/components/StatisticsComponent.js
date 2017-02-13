@@ -169,6 +169,7 @@ class StatisticsComponent extends React.Component {
               <Option value="home">首页</Option>
               <Option value="list">产品列表</Option>
               <Option value="product">产品详情</Option>
+              <Option value="recommend">推荐有礼</Option>
             </Select>
           </Col>
         </Row>

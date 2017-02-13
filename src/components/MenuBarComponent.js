@@ -78,7 +78,7 @@ class MenuBarComponent extends React.Component {
     //   data:{},
     //   success:(data)=>{
     //     let menus = data.result;
-    //     menus.unshift({'urlName':'首页','icon':'&#xe629;','id':1.1,'url':'/'});
+    //     menus.unshift({'urlName':' 首页','icon':'&#xe629;','id':1.1,'url':'/'});
     //     this.setState({
     //       menu: this.sortMenu(data.result)
     //     }, ()=> {
@@ -88,7 +88,7 @@ class MenuBarComponent extends React.Component {
     // });
     let menus = {
       'lst': [
-        {'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/'},
+        {roles: ["admin"],'urlName': '首页', 'icon': '&#xe629;', 'id': 1.1, 'url': '/'},
         {roles: ["admin"], 'urlName': '产品管理', 'icon': '&#xe602;', 'id': 1, 'url': '/productlist'},
         {roles: ["admin"], 'urlName': '首页推荐', 'icon': '&#xe614;', 'id': 3, 'url': '/speproduct'},
         // { 'urlName': '广告管理', 'icon': '&#xe603;', 'id': 4, 'url': '/ad' },
@@ -109,7 +109,10 @@ class MenuBarComponent extends React.Component {
     let list=_.chain(menus.lst)
       .filter(m=>m.roles==null||!_.isEmpty(_.intersection(m.roles,u.roles)))
       .value();
-
+    if(!u.channels&&u.roles[0]=="order_viewer"){
+      list.unshift(menus.lst[0]);
+      list.push({roles: ["admin"], 'urlName': '推荐列表', 'icon': '&#xe616;', 'id': 6, 'url': '/recommend'});
+    }
     this.setState({
       menu: this.sortMenu(list)
     }, () => {

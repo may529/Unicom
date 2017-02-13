@@ -30,15 +30,18 @@ class App extends React.Component {
 
   //权限验证(是否登录)
   handleAuth(nextState, replace) {
-    // console.log(SS.getObj(Config.user));
     if (!SS.get(Config.token) || !SS.getObj(Config.user)) {
       window.location.href = '#/login';
+    }
+    let u = SS.getObj(Config.user);
+    if(!u)u={};
+    if(u.roles&&u.roles[0]=="order_viewer"&&u.channels){
+      window.location.href = '#/guestbook';
     }
     return true;
   }
 
   render() {
-
     return (
       <Router history={hashHistory}>
         <Route path='/login' component={Login} />

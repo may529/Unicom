@@ -113,7 +113,7 @@ class ProductlistComponent extends React.Component {
           name: 'channel' //查询的字段名称
         },
         render(text, record) {
-          return _that.state.channels[record.channel];
+          return (_that.state.channels||{})[record.channel];
         },
         chlidOptionsUrl:Config.host +'/api/admin/channels',
         chlidOptionsType:{

@@ -220,15 +220,18 @@ class RecommendComponent extends React.Component {
         }],
 
         render(text, record) {
+          let color1="#f50";
+          let color2="#00a0e9";
+          let color3="#87d068";
           switch (record.status){
             case 0:
-              return <span>未处理</span>;
+              return <Tag color={color1}>未处理</Tag>;
               break;
             case 1:
-              return <span>继续追踪</span>;
+              return <Tag color={color2}>继续追踪</Tag>;
               break;
             case 2:
-              return <span>已完结</span>;
+              return <Tag color={color3}>已完结</Tag>;
               break;
           }
         }

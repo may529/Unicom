@@ -629,7 +629,7 @@ class CommCrudtableComponent extends React.Component {
           </Col>
         </Row>
         {(this.state.modifyShowType != 'hide') &&
-          <Modal title='订单详情'
+          <Modal title='详情'
             id='modifyShow'
             width={600}
             zIndex={99}
